@@ -1,14 +1,18 @@
 package com.kidpix.demo.Controllers;
 
 
+import com.kidpix.demo.Model.DTO.ApiResponse;
 import com.kidpix.demo.Model.DTO.UserDTO;
 import com.kidpix.demo.Model.Entity.UserEntity;
+import com.kidpix.demo.Model.Service.EmailService;
 import com.kidpix.demo.Model.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/user")
@@ -21,7 +25,7 @@ public class UserController {
 try {
 
 
-    UserDTO dto = this.userService.signUP(userDTO);
+    UserDTO dto = toDTO(this.userService.signUP(userDTO));
     return new ResponseEntity<>(dto, HttpStatus.CREATED);
 }
 catch (Exception exception ) {
@@ -34,7 +38,7 @@ catch (Exception exception ) {
     try {
 
 
-        UserDTO userEntity = userService.login(userDTO);
+        UserDTO userEntity =toDTO(userService.login(userDTO));
         return new ResponseEntity<>(userEntity, HttpStatus.OK);
     }
     catch (Exception exception ) {
@@ -45,7 +49,7 @@ catch (Exception exception ) {
     @GetMapping("/getUserInfoByEmail")
     public ResponseEntity<Object> getUserInfoByEmail(@RequestParam String email) {
     try {
-        UserDTO userEntity = userService.getUserInfoByEmail(email);
+        UserDTO userEntity = toDTO(userService.getUserInfoByEmail(email));
         return new ResponseEntity<>(userEntity, HttpStatus.OK);
     }
     catch (Exception exception ) {
@@ -53,6 +57,36 @@ catch (Exception exception ) {
     }
     }
 
+    @Autowired
+    private EmailService emailService;
 
+    @PostMapping("/sendSecurityCode")
+    public ResponseEntity<ApiResponse> processRequest(@RequestBody Map<String, String> requestData) {
+        emailService.sendSecurityCode(requestData.get("email").trim());
+        return ResponseEntity.ok(new ApiResponse("Code sent Successfully, Check your Email", true));
+    }
+
+    @PostMapping("/validateCode")
+    public ResponseEntity<ApiResponse> validateSecurityCode(@RequestBody Map<String, String> requestData) {
+        boolean isValid = emailService.validateSecurityCode(requestData.get("email"), Integer.parseInt(requestData.get("securityCode").trim()));
+
+        if (isValid) {
+            return ResponseEntity.ok(new ApiResponse("Your Email is verified successfully", true));
+        } else {
+            return ResponseEntity.ok(new ApiResponse("Your Email is NOT verified successfully", false));
+        }
+    }
+
+
+    private UserDTO toDTO(UserEntity save) {
+        UserDTO dto = new UserDTO();
+        dto.setEmail(save.getEmail());
+        dto.setFirstName(save.getFirstName());
+        dto.setUserName(save.getUserName());
+        dto.setPassword(save.getPassword());
+        dto.setId(save.getId());
+        dto.setLastName(save.getLastName());
+        return dto;
+    }
 
 }

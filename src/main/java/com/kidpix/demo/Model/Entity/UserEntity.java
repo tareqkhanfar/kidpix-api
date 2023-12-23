@@ -1,15 +1,23 @@
 package com.kidpix.demo.Model.Entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 @Entity
 @Table(name = "user_tbl")
+@Data
 public class UserEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // or another strategy like AUTO
     @Column(name = "user_id")
     private Long id;
+
+    @Column(name = "status_account")
+    private Byte status_account ;
+
+    @Column(name = "security_code")
+    private Integer security_code ;
 
     @Column(name = "first_name")
     private String firstName;

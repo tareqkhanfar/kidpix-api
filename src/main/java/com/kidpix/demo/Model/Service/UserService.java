@@ -13,7 +13,7 @@ public class UserService {
    @Autowired
     private UserRepo userRepo ;
 
-    public UserDTO signUP(UserDTO userDTO) {
+    public UserEntity signUP(UserDTO userDTO) {
 
         UserEntity userEntity = new UserEntity();
         userEntity.setFirstName(userDTO.getFirstName());
@@ -21,22 +21,13 @@ public class UserService {
         userEntity.setEmail(userDTO.getEmail());
         userEntity.setUserName(userDTO.getUserName());
         userEntity.setPassword(userDTO.getPassword());
-        return toDTO(this.userRepo.save(userEntity));
+        return this.userRepo.save(userEntity);
 
     }
 
-    private UserDTO toDTO(UserEntity save) {
-        UserDTO dto = new UserDTO();
-        dto.setEmail(save.getEmail());
-        dto.setFirstName(save.getFirstName());
-        dto.setUserName(save.getUserName());
-        dto.setPassword(save.getPassword());
-        dto.setId(save.getId());
-        dto.setLastName(save.getLastName());
-        return dto;
-    }
 
-    public UserDTO login(UserDTO userDTO) {
+
+    public UserEntity login(UserDTO userDTO) {
         System.out.println( "-->" + userDTO.getUserName());
 
         UserEntity userEntity = this.userRepo.findByUserName(userDTO.getUserName());
@@ -44,15 +35,25 @@ public class UserService {
         if (userEntity == null || !userDTO.getPassword().equals(userEntity.getPassword())) {
             throw new RuntimeException("Invalid username or password");
         }
-        return toDTO(userEntity);
+        return userEntity;
     }
 
-    public UserDTO getUserInfoByEmail(String email) {
+    public UserEntity getUserInfoByEmail(String email) {
         UserEntity userEntity = this.userRepo.findByEmail(email);
         if (userEntity == null) {
             throw new RuntimeException("User not found with this email: " + email);
         }
-        return toDTO(userEntity);
+        return userEntity;
     }
 
+    public boolean insertSecurityCodeForUserByEmail(String email , Integer code) {
+        UserEntity userEntity = userRepo.findByEmail(email) ;
+        userEntity.setSecurity_code(code);
+        userRepo.save(userEntity) ;
+        return true ;
+    }
+
+    public void save (UserEntity userEntity ) {
+        userRepo.save(userEntity) ;
+    }
 }
