@@ -29,11 +29,23 @@ public class UserDTO {
     @Size(max = 255, message = "Password cannot exceed 255 characters")
     private String password;
 
+    private Byte status_account =0 ;
+
+    public Byte getStatus_account() {
+        return status_account;
+    }
+
+    public void setStatus_account(Byte status_account) {
+        this.status_account = status_account;
+    }
+
     // getters and setters
 
     public Long getId() {
         return id;
     }
+
+
 
     public void setId(Long id) {
         this.id = id;

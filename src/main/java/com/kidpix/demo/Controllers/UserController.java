@@ -28,6 +28,7 @@ try {
     UserDTO dto = toDTO(this.userService.signUP(userDTO));
     return new ResponseEntity<>(dto, HttpStatus.CREATED);
 }
+
 catch (Exception exception ) {
     return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
 }
@@ -41,7 +42,11 @@ catch (Exception exception ) {
         UserDTO userEntity =toDTO(userService.login(userDTO));
         return new ResponseEntity<>(userEntity, HttpStatus.OK);
     }
+    catch (IllegalArgumentException e  ){
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+    }
     catch (Exception exception ) {
+
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
     }
     }
@@ -51,6 +56,9 @@ catch (Exception exception ) {
     try {
         UserDTO userEntity = toDTO(userService.getUserInfoByEmail(email));
         return new ResponseEntity<>(userEntity, HttpStatus.OK);
+    }
+    catch (IllegalArgumentException e  ){
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
     catch (Exception exception ) {
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
@@ -62,8 +70,14 @@ catch (Exception exception ) {
 
     @PostMapping("/sendSecurityCode")
     public ResponseEntity<ApiResponse> processRequest(@RequestBody Map<String, String> requestData) {
-        emailService.sendSecurityCode(requestData.get("email").trim());
-        return ResponseEntity.ok(new ApiResponse("Code sent Successfully, Check your Email", true));
+        try {
+            emailService.sendSecurityCode(requestData.get("email").trim());
+            return ResponseEntity.ok(new ApiResponse("Code sent Successfully, Check your Email", true));
+        }
+        catch (Exception e ) {
+            return ResponseEntity.internalServerError().body(new ApiResponse(e.getMessage(), false));
+        }
+
     }
 
     @PostMapping("/validateCode")
@@ -86,6 +100,7 @@ catch (Exception exception ) {
         dto.setPassword(save.getPassword());
         dto.setId(save.getId());
         dto.setLastName(save.getLastName());
+        dto.setStatus_account(save.getStatus_account());
         return dto;
     }
 

@@ -27,13 +27,12 @@ public class UserService {
 
 
 
-    public UserEntity login(UserDTO userDTO) {
-        System.out.println( "-->" + userDTO.getUserName());
+    public UserEntity login(UserDTO userDTO) throws IllegalArgumentException {
 
-        UserEntity userEntity = this.userRepo.findByUserName(userDTO.getUserName());
-        System.out.println("username : " + userEntity.getUserName() + "-->" + userDTO.getUserName());
-        if (userEntity == null || !userDTO.getPassword().equals(userEntity.getPassword())) {
-            throw new RuntimeException("Invalid username or password");
+        UserEntity userEntity = this.userRepo.findByEmail(userDTO.getEmail());
+
+        if (userEntity == null || !userDTO.getPassword().equals(userEntity.getPassword()) || !userDTO.getEmail().equals(userEntity.getEmail())) {
+            throw new IllegalArgumentException("Invalid username or password");
         }
         return userEntity;
     }
@@ -41,7 +40,7 @@ public class UserService {
     public UserEntity getUserInfoByEmail(String email) {
         UserEntity userEntity = this.userRepo.findByEmail(email);
         if (userEntity == null) {
-            throw new RuntimeException("User not found with this email: " + email);
+            throw new IllegalArgumentException("User not found with this email: " + email);
         }
         return userEntity;
     }
