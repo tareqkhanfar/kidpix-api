@@ -15,12 +15,19 @@ public class UserService {
 
     public UserEntity signUP(UserDTO userDTO) {
 
-        UserEntity userEntity = new UserEntity();
+
+        UserEntity userEntity = userRepo.findByEmail(userDTO.getEmail().trim());
+        if (userEntity != null) {
+            throw  new IllegalArgumentException("This  Account already exist ! ") ;
+        }
+         userEntity = new UserEntity();
         userEntity.setFirstName(userDTO.getFirstName());
         userEntity.setLastName(userDTO.getLastName());
         userEntity.setEmail(userDTO.getEmail());
         userEntity.setUserName(userDTO.getUserName());
         userEntity.setPassword(userDTO.getPassword());
+        Byte x = 0 ;
+        userEntity.setStatus_account(x);
         return this.userRepo.save(userEntity);
 
     }

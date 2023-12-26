@@ -16,6 +16,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/user")
+
 public class UserController {
 @Autowired
     private UserService userService ;
@@ -28,9 +29,12 @@ try {
     UserDTO dto = toDTO(this.userService.signUP(userDTO));
     return new ResponseEntity<>(dto, HttpStatus.CREATED);
 }
+catch (IllegalArgumentException e ) {
+    return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
 
+}
 catch (Exception exception ) {
-    return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
+    return new ResponseEntity<>(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 }
 }
 
@@ -47,7 +51,7 @@ catch (Exception exception ) {
     }
     catch (Exception exception ) {
 
-        return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
     }
 
@@ -61,13 +65,13 @@ catch (Exception exception ) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
     catch (Exception exception ) {
-        return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
     }
 
     @Autowired
     private EmailService emailService;
-
+    @CrossOrigin(origins = "http://localhost:8943")
     @PostMapping("/sendSecurityCode")
     public ResponseEntity<ApiResponse> processRequest(@RequestBody Map<String, String> requestData) {
         try {
@@ -79,6 +83,7 @@ catch (Exception exception ) {
         }
 
     }
+    @CrossOrigin(origins = "http://localhost:8943") // Specify the allowed origin
 
     @PostMapping("/validateCode")
     public ResponseEntity<ApiResponse> validateSecurityCode(@RequestBody Map<String, String> requestData) {
@@ -87,7 +92,7 @@ catch (Exception exception ) {
         if (isValid) {
             return ResponseEntity.ok(new ApiResponse("Your Email is verified successfully", true));
         } else {
-            return ResponseEntity.ok(new ApiResponse("Your Email is NOT verified successfully", false));
+            return ResponseEntity.badRequest().body(new ApiResponse("Your Email is NOT verified successfully", false));
         }
     }
 
