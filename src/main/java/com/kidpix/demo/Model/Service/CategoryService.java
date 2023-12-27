@@ -19,4 +19,8 @@ public class CategoryService {
     public List<CategoryEntity> findAllThemes() {
         return this.categoryRepo.findAll();
     }
+
+    public CategoryEntity findCatById(Long catId){
+        return this.categoryRepo.findById(catId).get();
+    }
 }

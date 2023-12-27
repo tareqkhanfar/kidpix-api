@@ -31,4 +31,8 @@ public class CategoryEntity {
     @OneToMany(mappedBy = "category" , cascade = CascadeType.ALL , fetch = FetchType.LAZY)
     private List<SceneEntity > sceneEntityList ;
 
+
+    @OneToMany(mappedBy = "category" , cascade = CascadeType.ALL , fetch = FetchType.LAZY)
+    private List<BookEntity > bookEntities ;
+
 }

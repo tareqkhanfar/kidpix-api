@@ -32,6 +32,5 @@ public class SceneEntity {
     private CategoryEntity category ;
 
 
-    @ManyToMany(mappedBy = "scenes")
-    private List<BookEntity> bookEntityList;
+
 }

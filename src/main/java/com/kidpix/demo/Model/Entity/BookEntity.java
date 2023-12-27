@@ -27,6 +27,9 @@ public class BookEntity  {
     @Column(name = "gender")
     private String gender ;
 
+    @Column(name = "age")
+    private Integer age ;
+
     @Column(name = "additional_notes")
     private String notes ;
 
@@ -34,18 +37,12 @@ public class BookEntity  {
     private String bookPath ;
 
 
-    @ManyToMany(cascade = CascadeType.ALL) // or an appropriate cascade type
-    @JoinTable(
-            name = "book_scene",
-            joinColumns = @JoinColumn(name = "book_id"),
-            inverseJoinColumns = @JoinColumn(name = "scene_id")
-    )
-    private List<SceneEntity> scenes;
 
 
 
-
-
+    @ManyToOne
+    @JoinColumn(name = "cat_id")
+    private CategoryEntity category ;
 
 
     @ManyToOne

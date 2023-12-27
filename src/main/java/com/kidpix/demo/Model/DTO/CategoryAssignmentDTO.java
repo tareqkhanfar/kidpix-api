@@ -3,7 +3,7 @@ package com.kidpix.demo.Model.DTO;
 import lombok.Data;
 
 @Data
-public class SceneAssignmentDTO {
+public class CategoryAssignmentDTO {
     private Long bookId;
-    private Long sceneId;
+    private Long catId;
 }

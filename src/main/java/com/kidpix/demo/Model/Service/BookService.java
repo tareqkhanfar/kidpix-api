@@ -8,6 +8,8 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.awt.print.Book;
+
 @Service
 public class BookService {
 
@@ -15,19 +17,20 @@ public class BookService {
     private BookRepository bookRepository ;
 
     @Autowired
-    private SceneRepo sceneRepository ;
+    private CategoryService categoryService ;
+
+
     public BookEntity createBook(BookEntity bookEntity) {
       return   bookRepository.save(bookEntity);
 
     }
 
-    @Transactional
-    public void addSceneToBook(Long bookId, Long sceneId) {
-        BookEntity book = bookRepository.findById(bookId).orElseThrow(/* NotFoundException */);
-        SceneEntity scene = sceneRepository.findById(sceneId).orElseThrow(/* NotFoundException */);
-        book.getScenes().add(scene);
-        bookRepository.saveAndFlush(book);
+
+    public void addSceneToBook(Long bookId, Long catId) {
+        BookEntity bookEntity = this.bookRepository.findById(bookId).get();
+        bookEntity.setCategory(categoryService.findCatById(catId));
+        this.bookRepository.save(bookEntity);
+
 
     }
-
 }

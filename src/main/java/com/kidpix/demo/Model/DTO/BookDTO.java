@@ -1,5 +1,6 @@
 package com.kidpix.demo.Model.DTO;
 
+import com.kidpix.demo.Model.Repositories.SceneRepo;
 import lombok.Data;
 
 @Data
@@ -11,4 +12,6 @@ public class BookDTO {
     private String notes;
     private String bookPath;
     private String userEmail ;
+    private Integer age ;
+    private String fileExtension ;
 }
