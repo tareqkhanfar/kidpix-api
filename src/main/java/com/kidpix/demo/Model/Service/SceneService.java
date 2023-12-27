@@ -24,13 +24,13 @@ public class SceneService {
       return   sceneRepo.findAll();
     }
 
-    public List<SceneEntity> getScenesByCategory(Byte category) {
+    public List<SceneEntity> getScenesByCategory(Long category) {
 
-      return   sceneRepo.findAllByCategory(category) ;
+      return  null ;
     }
 
-    public SceneEntity getSceneByPageNumber(byte category , byte pageNumber) {
-        return   sceneRepo.findAllByCategoryAndPageNumber(category , pageNumber) ;
+    public SceneEntity getSceneByPageNumber(Long category , byte pageNumber) {
+        return null ;
 
     }
 }

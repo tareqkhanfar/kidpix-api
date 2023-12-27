@@ -7,7 +7,5 @@ import java.util.List;
 
 public interface SceneRepo extends JpaRepository<SceneEntity , Long> {
 
-    public List<SceneEntity> findAllByCategory(Byte cat) ;
-    public SceneEntity findAllByCategoryAndPageNumber(Byte cat , Byte pageNumber) ;
 
 }

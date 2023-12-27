@@ -3,6 +3,7 @@ package com.kidpix.demo.Controllers;
 
 import com.kidpix.demo.Model.DTO.SceneDTO;
 import com.kidpix.demo.Model.Entity.SceneEntity;
+import com.kidpix.demo.Model.Repositories.CategoryRepo;
 import com.kidpix.demo.Model.Service.SceneService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,9 @@ public class SceneController {
 
     @Autowired
     private SceneService sceneService ;
+
+    @Autowired
+    private CategoryRepo categoryRepo ;
 
 
 
@@ -39,7 +43,7 @@ public class SceneController {
         return ResponseEntity.ok(dtoList);
     }
     @GetMapping("/category/{category}")
-    public ResponseEntity<List<SceneDTO>> getScenesByCategory(@PathVariable Byte category) {
+    public ResponseEntity<List<SceneDTO>> getScenesByCategory(@PathVariable Long category) {
         List<SceneEntity> scenes = sceneService.getScenesByCategory(category);
         List<SceneDTO> dtoList = scenes.stream()
                 .map(SceneController::convertEntityToDTO)
@@ -47,7 +51,7 @@ public class SceneController {
         return ResponseEntity.ok(dtoList);
     }
     @GetMapping("/{category}/page/{pageNumber}")
-    public ResponseEntity<SceneDTO> getSceneByPageNumber(@PathVariable byte category , @PathVariable byte pageNumber) {
+    public ResponseEntity<SceneDTO> getSceneByPageNumber(@PathVariable Long category , @PathVariable byte pageNumber) {
         SceneEntity scene = sceneService.getSceneByPageNumber(category , pageNumber);
         if (scene != null) {
             SceneDTO sceneDTO = SceneController.convertEntityToDTO(scene);
@@ -63,17 +67,17 @@ public class SceneController {
         sceneDTO.setSceneId(sceneEntity.getScene_id());
         sceneDTO.setScenePath(sceneEntity.getScenePath());
         sceneDTO.setKeywords(sceneEntity.getKeywords());
-        sceneDTO.setCategory(sceneEntity.getCategory());
+        sceneDTO.setCategoryId(sceneEntity.getCategory().getCatID());
         sceneDTO.setPageNumber(sceneEntity.getPageNumber());
         return sceneDTO;
     }
 
-    public static SceneEntity convertDTOToEntity(SceneDTO sceneDTO) {
+    public  SceneEntity convertDTOToEntity(SceneDTO sceneDTO) {
         SceneEntity sceneEntity = new SceneEntity();
         sceneEntity.setScene_id(sceneDTO.getSceneId());
         sceneEntity.setScenePath(sceneDTO.getScenePath());
         sceneEntity.setKeywords(sceneDTO.getKeywords());
-        sceneEntity.setCategory(sceneDTO.getCategory());
+        sceneEntity.setCategory(categoryRepo.findById(sceneDTO.getCategoryId()).get());
         sceneEntity.setPageNumber(sceneDTO.getPageNumber());
         return sceneEntity;
     }

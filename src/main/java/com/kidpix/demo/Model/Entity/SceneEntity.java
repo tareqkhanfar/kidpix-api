@@ -4,6 +4,8 @@ package com.kidpix.demo.Model.Entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.List;
+
 @Entity
 @Table(name = "scene_tbl")
 @Data
@@ -25,7 +27,17 @@ public class SceneEntity {
     private String keywords ;
 
 
-    @Column(name = "category")
-    private Byte category ;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cat_id")
+    private CatrgoryEntity category ;
+
+
+    @ManyToMany(cascade = { CascadeType.ALL })
+    @JoinTable(
+            name = "book_scene",
+            joinColumns = { @JoinColumn(name = "scene_id") },
+            inverseJoinColumns = { @JoinColumn(name = "book_id") }
+    )
+    private List<BookEntity> books;
 
 }

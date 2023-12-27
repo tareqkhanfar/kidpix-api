@@ -6,7 +6,7 @@ public class SceneDTO {
     private String keywords;
 
     private  Byte pageNumber ;
-    private Byte category;
+    private Long categoryId;
 
     // Getters and Setters
 
@@ -43,13 +43,14 @@ public class SceneDTO {
         this.keywords = keywords;
     }
 
-    public Byte getCategory() {
-        return category;
+    public Long getCategoryId() {
+        return categoryId;
     }
 
-    public void setCategory(Byte category) {
-        this.category = category;
+    public void setCategoryId(Long categoryId) {
+        this.categoryId = categoryId;
     }
 
-    // Constructor, toString(), etc. (optional)
+
+// Constructor, toString(), etc. (optional)
 }
