@@ -3,6 +3,8 @@ package com.kidpix.demo.Model.Entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.List;
+
 @Entity
 @Table(name = "user_tbl")
 @Data
@@ -33,6 +35,9 @@ public class UserEntity {
 
     @Column(name = "password")
     private String password;
+
+    @OneToMany(mappedBy = "user")
+    private List<BookEntity> bookEntityList ;
 
 
     public Long getId() {

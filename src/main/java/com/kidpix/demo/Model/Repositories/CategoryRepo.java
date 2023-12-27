@@ -1,7 +1,7 @@
 package com.kidpix.demo.Model.Repositories;
 
-import com.kidpix.demo.Model.Entity.CatrgoryEntity;
+import com.kidpix.demo.Model.Entity.CategoryEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface CategoryRepo extends JpaRepository<CatrgoryEntity , Long> {
+public interface CategoryRepo extends JpaRepository<CategoryEntity, Long> {
 }

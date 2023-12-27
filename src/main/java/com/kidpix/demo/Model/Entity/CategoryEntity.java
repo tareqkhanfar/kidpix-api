@@ -9,7 +9,7 @@ import java.util.List;
 @Entity
 @Table(name = "category_tbl")
 @Data
-public class CatrgoryEntity {
+public class CategoryEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // or another strategy like AUTO
@@ -18,6 +18,15 @@ public class CatrgoryEntity {
 
     @Column(name = "cat_name")
     private String catName;
+
+    @Column(name = "description")
+    private String description ;
+
+    @Column(name = "theme_image_path")
+    private String themeImagePath ;
+
+    @Column(name = "theme_example")
+    private String themeExample ;
 
     @OneToMany(mappedBy = "category" , cascade = CascadeType.ALL , fetch = FetchType.LAZY)
     private List<SceneEntity > sceneEntityList ;

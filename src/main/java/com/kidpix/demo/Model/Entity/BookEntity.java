@@ -33,8 +33,24 @@ public class BookEntity  {
     @Column(name = "book_path")
     private String bookPath ;
 
-    @ManyToMany(mappedBy = "books")
+
+    @ManyToMany(cascade = CascadeType.ALL) // or an appropriate cascade type
+    @JoinTable(
+            name = "book_scene",
+            joinColumns = @JoinColumn(name = "book_id"),
+            inverseJoinColumns = @JoinColumn(name = "scene_id")
+    )
     private List<SceneEntity> scenes;
+
+
+
+
+
+
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private UserEntity user ;
 
 
 }

@@ -29,15 +29,9 @@ public class SceneEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cat_id")
-    private CatrgoryEntity category ;
+    private CategoryEntity category ;
 
 
-    @ManyToMany(cascade = { CascadeType.ALL })
-    @JoinTable(
-            name = "book_scene",
-            joinColumns = { @JoinColumn(name = "scene_id") },
-            inverseJoinColumns = { @JoinColumn(name = "book_id") }
-    )
-    private List<BookEntity> books;
-
+    @ManyToMany(mappedBy = "scenes")
+    private List<BookEntity> bookEntityList;
 }
