@@ -26,6 +26,12 @@ public class SceneEntity {
     @Column(name = "keywords" , length = 2000)
     private String keywords ;
 
+    @Column(name = "defualt_story_text" , length = 4000)
+    private String defualtStoryText ;
+
+
+
+
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cat_id")

@@ -55,7 +55,7 @@ public class BookController {
             ByteArrayInputStream bis = new ByteArrayInputStream(imageByte);
             image = ImageIO.read(bis);
             bis.close();
-           File outputfile = new File("KidImages\\"+userEmail+""+ LocalDate.now()+"."+fileExtension);
+           File outputfile = new File("KidImages/"+userEmail+""+ LocalDate.now()+"."+fileExtension);
            ImageIO.write(image, fileExtension, outputfile);
 
 return outputfile.getAbsolutePath();

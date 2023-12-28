@@ -33,4 +33,8 @@ public class BookService {
 
 
     }
+
+    public BookEntity findBookById(Long bookId) {
+        return this.bookRepository.findById(bookId).get() ;
+    }
 }

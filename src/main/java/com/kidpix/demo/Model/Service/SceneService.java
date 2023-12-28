@@ -2,7 +2,9 @@ package com.kidpix.demo.Model.Service;
 
 
 import com.kidpix.demo.Model.Entity.SceneEntity;
+import com.kidpix.demo.Model.Entity.StoryTextEntity;
 import com.kidpix.demo.Model.Repositories.SceneRepo;
+import com.kidpix.demo.Model.Repositories.StoryTextRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,9 @@ public class SceneService {
     @Autowired
     private SceneRepo sceneRepo ;
 
+    @Autowired
+    private StoryTextRepo storyTextRepo ;
+
 
     public SceneEntity saveScene(SceneEntity sceneEntity) {
 
@@ -27,6 +32,7 @@ public class SceneService {
     }
 
     public List<SceneEntity> getScenesByCategory(Long category) {
+
           return this.sceneRepo.findByCategory_CatID(category) ;
     }
 
@@ -36,6 +42,11 @@ public class SceneService {
     }
 
 
+    public StoryTextEntity addTextToScene(StoryTextEntity storyTextEntity ) {
+        return  this.storyTextRepo.save(storyTextEntity) ;
+    }
 
-
+    public SceneEntity findSceneById(Long sceneId) {
+        return this.sceneRepo.findById(sceneId).get() ;
+    }
 }

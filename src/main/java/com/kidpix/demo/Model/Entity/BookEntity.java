@@ -50,4 +50,7 @@ public class BookEntity  {
     private UserEntity user ;
 
 
+    @OneToMany(mappedBy = "book")
+    private List<StoryTextEntity> storyTextEntities ;
+
 }

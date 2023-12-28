@@ -2,8 +2,12 @@ package com.kidpix.demo.Controllers;
 
 
 import com.kidpix.demo.Model.DTO.SceneDTO;
+import com.kidpix.demo.Model.DTO.StoryTextDTO;
 import com.kidpix.demo.Model.Entity.SceneEntity;
+import com.kidpix.demo.Model.Entity.StoryTextEntity;
 import com.kidpix.demo.Model.Repositories.CategoryRepo;
+import com.kidpix.demo.Model.Repositories.StoryTextRepo;
+import com.kidpix.demo.Model.Service.BookService;
 import com.kidpix.demo.Model.Service.SceneService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,6 +26,11 @@ public class SceneController {
 
     @Autowired
     private CategoryRepo categoryRepo ;
+
+    @Autowired
+    private BookService bookService ;
+
+
 
 
 
@@ -47,7 +56,16 @@ public class SceneController {
         List<SceneDTO> dtoList = scenes.stream()
                 .map(SceneController::convertEntityToDTO)
                 .collect(Collectors.toList());
+
+        System.out.println(dtoList);
         return ResponseEntity.ok(dtoList);
+    }
+
+    @GetMapping("/getSceneById/{sceneId}")
+    public ResponseEntity<SceneDTO> getSceneById(@PathVariable Long sceneId) {
+        SceneEntity sceneEntity = this.sceneService.findSceneById(sceneId) ;
+        SceneDTO dto = convertEntityToDTO(sceneEntity) ;
+        return ResponseEntity.ok(dto);
     }
     @GetMapping("/{category}/page/{pageNumber}")
     public ResponseEntity<SceneDTO> getSceneByPageNumber(@PathVariable Long category , @PathVariable byte pageNumber) {
@@ -59,6 +77,26 @@ public class SceneController {
         return ResponseEntity.notFound().build();
     }
 
+@PostMapping("/addStoryToBook")
+public ResponseEntity<StoryTextDTO> storyTextToBook (@RequestBody StoryTextDTO storyTextDTO) {
+        return ResponseEntity.ok(convertEntityToDto(this.sceneService.addTextToScene(convertDtoToEntity(storyTextDTO))));
+}
+
+
+    public StoryTextEntity convertDtoToEntity(StoryTextDTO dto) {
+        StoryTextEntity entity = new StoryTextEntity();
+        entity.setStory_id(dto.getStoryId());
+        entity.setBook(this.bookService.findBookById(dto.getBookId()));
+        entity.setStoryText(dto.getStoryText());
+        return entity;
+    }
+    public StoryTextDTO convertEntityToDto(StoryTextEntity entity) {
+        StoryTextDTO dto = new StoryTextDTO();
+        dto.setStoryId(entity.getStory_id());
+        dto.setBookId(entity.getBook().getBook_id());
+        dto.setStoryText(entity.getStoryText());
+        return dto;
+    }
 
 
 
@@ -69,6 +107,8 @@ public class SceneController {
         sceneDTO.setKeywords(sceneEntity.getKeywords());
         sceneDTO.setCategoryId(sceneEntity.getCategory().getCatID());
         sceneDTO.setPageNumber(sceneEntity.getPageNumber());
+        sceneDTO.setDefualtStoryText(sceneEntity.getDefualtStoryText());
+
         return sceneDTO;
     }
 
@@ -79,6 +119,7 @@ public class SceneController {
         sceneEntity.setKeywords(sceneDTO.getKeywords());
         sceneEntity.setCategory(categoryRepo.findById(sceneDTO.getCategoryId()).get());
         sceneEntity.setPageNumber(sceneDTO.getPageNumber());
+        sceneEntity.setDefualtStoryText(sceneDTO.getDefualtStoryText());
         return sceneEntity;
     }
 
