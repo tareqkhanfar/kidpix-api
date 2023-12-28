@@ -21,7 +21,7 @@ public class BookEntity  {
     private String kidName;
 
 
-    @Column(name = "kid_photo")
+    @Column(name = "kid_photo" , length = 2000)
     private String kid_photo ;
 
     @Column(name = "gender")
@@ -30,10 +30,10 @@ public class BookEntity  {
     @Column(name = "age")
     private Integer age ;
 
-    @Column(name = "additional_notes")
+    @Column(name = "additional_notes" , length = 2000)
     private String notes ;
 
-    @Column(name = "book_path")
+    @Column(name = "book_path" , length = 2000)
     private String bookPath ;
 
 

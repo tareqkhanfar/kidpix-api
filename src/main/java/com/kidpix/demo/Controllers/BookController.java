@@ -9,6 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.time.LocalDate;
+import java.util.Base64;
 
 
 @RequestMapping("/api/book")
@@ -25,9 +32,33 @@ public class BookController {
 
     @PostMapping
     public ResponseEntity<BookDTO> createBook(@RequestBody BookDTO bookDTO) {
+        try {
+            String path =  DecodeImage (bookDTO.getKidPhoto() , bookDTO.getFileExtension() , bookDTO.getUserEmail()) ;
+            bookDTO.setKidPhoto(path);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
         BookEntity bookEntity = convertToEntity(bookDTO);
+
+
         BookEntity savedBook = bookService.createBook(bookEntity);
         return ResponseEntity.ok(convertToDTO(savedBook));
+    }
+
+    private String DecodeImage(String bookPath, String fileExtension , String userEmail) throws IOException {
+        BufferedImage image = null;
+        byte[] imageByte;
+
+            Base64.Decoder decoder = Base64.getDecoder();
+            imageByte = decoder.decode(bookPath);
+            ByteArrayInputStream bis = new ByteArrayInputStream(imageByte);
+            image = ImageIO.read(bis);
+            bis.close();
+           File outputfile = new File("KidImages\\"+userEmail+""+ LocalDate.now()+"."+fileExtension);
+           ImageIO.write(image, fileExtension, outputfile);
+
+return outputfile.getAbsolutePath();
     }
 
     @PostMapping("/addCategoryToBook")

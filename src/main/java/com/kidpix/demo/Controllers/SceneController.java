@@ -1,7 +1,6 @@
 package com.kidpix.demo.Controllers;
 
 
-import com.kidpix.demo.Model.DTO.CategoryDTO;
 import com.kidpix.demo.Model.DTO.SceneDTO;
 import com.kidpix.demo.Model.Entity.SceneEntity;
 import com.kidpix.demo.Model.Repositories.CategoryRepo;
@@ -35,7 +34,6 @@ public class SceneController {
     }
 
     @GetMapping("/getAll")
-
     public ResponseEntity<List<SceneDTO>> getAllScenes() {
         List<SceneEntity> scenes = sceneService.getAllScenes();
         List<SceneDTO> dtoList = scenes.stream()

@@ -19,11 +19,11 @@ public class SceneEntity {
     @Column(name = "page_number")
     private Byte pageNumber ;
 
-    @Column(name = "scene_path")
+    @Column(name = "scene_path", length = 2000)
     private String scenePath ;
 
 
-    @Column(name = "keywords")
+    @Column(name = "keywords" , length = 2000)
     private String keywords ;
 
 

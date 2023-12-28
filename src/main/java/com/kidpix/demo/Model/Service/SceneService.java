@@ -27,8 +27,7 @@ public class SceneService {
     }
 
     public List<SceneEntity> getScenesByCategory(Long category) {
-
-      return  null ;
+          return this.sceneRepo.findByCategory_CatID(category) ;
     }
 
     public SceneEntity getSceneByPageNumber(Long category , byte pageNumber) {

@@ -22,10 +22,10 @@ public class CategoryEntity {
     @Column(name = "description")
     private String description ;
 
-    @Column(name = "theme_image_path")
+    @Column(name = "theme_image_path" , length = 2000)
     private String themeImagePath ;
 
-    @Column(name = "theme_example")
+    @Column(name = "theme_example" , length = 2000)
     private String themeExample ;
 
     @OneToMany(mappedBy = "category" , cascade = CascadeType.ALL , fetch = FetchType.LAZY)
