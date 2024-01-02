@@ -29,7 +29,8 @@ public class SceneEntity {
     @Column(name = "defualt_story_text" , length = 4000)
     private String defualtStoryText ;
 
-
+    @Column(name = "story_text" , length = 4000)
+    private String story_txt ;
 
 
 
