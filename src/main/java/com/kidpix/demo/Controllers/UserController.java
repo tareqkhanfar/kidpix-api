@@ -71,7 +71,7 @@ catch (Exception exception ) {
 
     @Autowired
     private EmailService emailService;
-    @CrossOrigin(origins = "http://localhost:8943")
+    @CrossOrigin(origins = "*")
     @PostMapping("/sendSecurityCode")
     public ResponseEntity<ApiResponse> processRequest(@RequestBody Map<String, String> requestData) {
         try {
@@ -83,7 +83,7 @@ catch (Exception exception ) {
         }
 
     }
-    @CrossOrigin(origins = "http://localhost:8943") // Specify the allowed origin
+    @CrossOrigin(origins = "*") // Specify the allowed origin
 
     @PostMapping("/validateCode")
     public ResponseEntity<ApiResponse> validateSecurityCode(@RequestBody Map<String, String> requestData) {

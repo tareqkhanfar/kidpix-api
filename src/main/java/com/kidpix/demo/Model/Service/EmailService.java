@@ -18,6 +18,7 @@ public class EmailService {
     private UserService userService;
 
     public void sendSecurityCode(String to) {
+        System.out.println("to : " + to);
         int code = generateSecurityCode();
         SimpleMailMessage message = new SimpleMailMessage();
 
