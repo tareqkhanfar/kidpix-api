@@ -32,12 +32,16 @@ public class BookController {
 
     @PostMapping
     public ResponseEntity<BookDTO> createBook(@RequestBody BookDTO bookDTO) {
+        /*
         try {
-            String path =  DecodeImage (bookDTO.getKidPhoto() , bookDTO.getFileExtension() , bookDTO.getUserEmail()) ;
+           // String path =  DecodeImage (bookDTO.getKidPhoto() , bookDTO.getFileExtension() , bookDTO.getUserEmail()) ;
+            String path =
             bookDTO.setKidPhoto(path);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
+         */
 
         BookEntity bookEntity = convertToEntity(bookDTO);
 
