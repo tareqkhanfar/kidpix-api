@@ -84,8 +84,6 @@ if (!outDir.exists()){
         String scriptPath = Paths.get(this.scriptPath).toAbsolutePath().toString();
         String checkpointDir = Paths.get(this.checkpointDir).toAbsolutePath().toString();
 
-
-
         String[] command = {
                 pythonEnvPath,
                 scriptPath,
@@ -93,9 +91,6 @@ if (!outDir.exists()){
                 "--test_dir", testDir,
                 "--output_dir", outputDir
         };
-
-
-
 
         ProcessBuilder processBuilder = new ProcessBuilder(command);
         processBuilder.inheritIO();

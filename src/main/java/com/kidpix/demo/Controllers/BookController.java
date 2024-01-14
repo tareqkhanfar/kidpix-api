@@ -30,6 +30,13 @@ public class BookController {
     private UserService userService ;
 
 
+
+    @GetMapping("/getCountByStatus/{status}")
+    public ResponseEntity<Integer> getStatusCount(@PathVariable("status") String  status){
+       return ResponseEntity.ok( this.bookService.findBookByStatus(status)) ;
+
+    }
+
     @PostMapping
     public ResponseEntity<BookDTO> createBook(@RequestBody BookDTO bookDTO) {
         /*
@@ -86,6 +93,7 @@ return outputfile.getAbsolutePath();
         bookEntity.setBookPath(bookDTO.getBookPath());
         bookEntity.setUser(userService.getUserInfoByEmail(bookDTO.getUserEmail()));
         bookEntity.setAge(bookDTO.getAge());
+        bookEntity.setStatus(bookDTO.getStatus());
         // Map other fields as necessary
         return bookEntity;
     }
@@ -100,6 +108,7 @@ return outputfile.getAbsolutePath();
         bookDTO.setBookPath(bookEntity.getBookPath());
         bookDTO.setUserEmail(bookEntity.getUser().getEmail());
         bookDTO.setAge(bookEntity.getAge());
+        bookDTO.setStatus(bookEntity.getStatus());
         return bookDTO;
     }
 

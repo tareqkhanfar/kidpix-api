@@ -37,12 +37,15 @@ public class BookEntity  {
     private String bookPath ;
 
 
-
+    @Column(name = "status")
+    private String status ;
 
 
     @ManyToOne
     @JoinColumn(name = "cat_id")
     private CategoryEntity category ;
+
+
 
 
     @ManyToOne
@@ -52,5 +55,8 @@ public class BookEntity  {
 
     @OneToMany(mappedBy = "book")
     private List<StoryTextEntity> storyTextEntities ;
+
+    @OneToMany(mappedBy = "book")
+    private List<PhysicalBookEntity> physicalBookEntities ;
 
 }

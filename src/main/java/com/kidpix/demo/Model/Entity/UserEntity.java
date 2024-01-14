@@ -36,8 +36,14 @@ public class UserEntity {
     @Column(name = "password")
     private String password;
 
+    @Column(name = "isAdmin")
+    private Byte isAdmin;
+
     @OneToMany(mappedBy = "user")
     private List<BookEntity> bookEntityList ;
+
+    @OneToMany(mappedBy = "user")
+    private List<PhysicalBookEntity> physicalBookEntities ;
 
 
     public Long getId() {

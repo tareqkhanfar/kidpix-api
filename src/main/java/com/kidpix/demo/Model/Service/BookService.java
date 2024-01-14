@@ -21,6 +21,7 @@ public class BookService {
 
 
     public BookEntity createBook(BookEntity bookEntity) {
+        bookEntity.setStatus("Pending");
       return bookRepository.save(bookEntity);
 
     }
@@ -36,5 +37,13 @@ public class BookService {
 
     public BookEntity findBookById(Long bookId) {
         return this.bookRepository.findById(bookId).get() ;
+    }
+
+    public BookEntity getBookById(Long bookId) {
+        return this.bookRepository.findById(bookId).get();
+    }
+
+    public Integer findBookByStatus(String status) {
+       return this.bookRepository.findAllByStatus(status).size() ;
     }
 }

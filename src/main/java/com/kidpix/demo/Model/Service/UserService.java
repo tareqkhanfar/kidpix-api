@@ -5,7 +5,10 @@ import com.kidpix.demo.Model.Entity.UserEntity;
 import com.kidpix.demo.Model.Repositories.UserRepo;
 import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class UserService {
@@ -61,5 +64,13 @@ public class UserService {
 
     public void save (UserEntity userEntity ) {
         userRepo.save(userEntity) ;
+    }
+
+    public List<UserEntity> getAllUsers() {
+        return  this.userRepo.findAll();
+    }
+
+    public UserEntity getUserById(Long userId) {
+        return this.userRepo.findById(userId).get();
     }
 }

@@ -14,4 +14,5 @@ public class BookDTO {
     private String userEmail ;
     private Integer age ;
     private String fileExtension ;
+    private String status ;
 }

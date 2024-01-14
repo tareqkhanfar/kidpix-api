@@ -12,7 +12,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/user")
@@ -96,6 +98,12 @@ catch (Exception exception ) {
         }
     }
 
+    @GetMapping("/getAllUsers")
+    public ResponseEntity<List<UserDTO>> getAllUsers(){
+        List<UserDTO> userDTOList = this.userService.getAllUsers().stream().map(this::toDTO).collect(Collectors.toList());
+        return ResponseEntity.ok(userDTOList);
+    }
+
 
     private UserDTO toDTO(UserEntity save) {
         UserDTO dto = new UserDTO();
@@ -106,6 +114,7 @@ catch (Exception exception ) {
         dto.setId(save.getId());
         dto.setLastName(save.getLastName());
         dto.setStatus_account(save.getStatus_account());
+        dto.setIsAdmin(save.getIsAdmin());
         return dto;
     }
 

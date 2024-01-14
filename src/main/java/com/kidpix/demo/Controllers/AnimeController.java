@@ -24,7 +24,6 @@ public class AnimeController {
     @PostMapping
     public ResponseEntity<?> convertToAnime (@RequestBody RequestApi requestApi) throws IOException {
         System.out.println("test /: "+requestApi.getKidName());
-
         return  ResponseEntity.ok(this.animeService.convertToAnime(requestApi));
     }
 }
