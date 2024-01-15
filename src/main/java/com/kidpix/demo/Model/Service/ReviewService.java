@@ -34,6 +34,6 @@ public class ReviewService {
 
     public Double getAverageOverAllKidpix() {
 
-        return  this.reviewRepo.findAverageOverAllWebsite().get();
+        return Math.round(this.reviewRepo.findAverageOverAllWebsite().get() * 100.0) / 100.0;
     }
 }

@@ -31,11 +31,7 @@ public class BookController {
 
 
 
-    @GetMapping("/getCountByStatus/{status}")
-    public ResponseEntity<Integer> getStatusCount(@PathVariable("status") String  status){
-       return ResponseEntity.ok( this.bookService.findBookByStatus(status)) ;
 
-    }
 
     @PostMapping
     public ResponseEntity<BookDTO> createBook(@RequestBody BookDTO bookDTO) {

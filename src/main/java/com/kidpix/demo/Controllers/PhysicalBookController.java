@@ -8,6 +8,7 @@ import com.kidpix.demo.Model.Service.BookService;
 import com.kidpix.demo.Model.Service.PhysicalBookService;
 import com.kidpix.demo.Model.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -38,6 +39,28 @@ public class PhysicalBookController {
     @GetMapping("/getPhysicalBooks")
     public List<PhysicalBookWithUserBook> physicalBookWithUserBooks() {
         return this.physicalBookService.getPhysicalBooks();
+    }
+
+    @GetMapping("/getTotalClientPurchesBook")
+    public ResponseEntity<Long> getTotalClientPurchesBook() {
+      return   ResponseEntity.ok(this.physicalBookService.getTotalClientPurchesBook());
+    }
+    @GetMapping("/getTotalSale")
+    public ResponseEntity<Double> getTotalSale () {
+     return   ResponseEntity.ok(this.physicalBookService.getTotalSales() );
+    }
+
+    @GetMapping("/getTotalSaleForCurrentMonth")
+    public ResponseEntity<Double> getTotalSaleForCurrentMonth () {
+        return   ResponseEntity.ok(this.physicalBookService.getTotalSalesForCurrentMonth() );
+    }
+    @GetMapping("/getTotalSaleForCurrentYear")
+    public ResponseEntity<Double> getTotalSaleForCurrentYear () {
+        return   ResponseEntity.ok(this.physicalBookService.getTotalSalesForCurrentYear() );
+    }
+    @GetMapping("/getCountByStatus/{status}")
+    public ResponseEntity<Long> getStatusCount(@PathVariable("status") String  status){
+        return ResponseEntity.ok( this.physicalBookService.findBookByStatus(status)) ;
     }
 
     private PhysicalBookDto convertToDto(PhysicalBookEntity entity) {

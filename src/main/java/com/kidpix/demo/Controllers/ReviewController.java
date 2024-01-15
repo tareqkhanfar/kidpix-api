@@ -11,10 +11,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static org.springframework.http.ResponseEntity.internalServerError;
 
 @RestController
-@RequestMapping(name = "/api/reviews")
+@RequestMapping( "/api/reviews")
 public class ReviewController {
 
 
@@ -58,6 +57,8 @@ public class ReviewController {
         dto.setReviewId(entity.getReviewId());
         dto.setRating(entity.getRating());
         dto.setThemeName(entity.getThemeName());
+        dto.setRatingDate(entity.getRatingDate());
+        dto.setReview(entity.getReview());
         return dto;
     }
     public ReviewsEntity convertToEntity(ReviewsDTO dto) {
@@ -65,6 +66,8 @@ public class ReviewController {
         entity.setReviewId(dto.getReviewId());
         entity.setRating(dto.getRating());
         entity.setThemeName(dto.getThemeName());
+        entity.setRatingDate(dto.getRatingDate());
+        entity.setReview(dto.getReview());
         return entity;
     }
 

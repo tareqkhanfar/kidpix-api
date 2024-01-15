@@ -36,4 +36,24 @@ public class PhysicalBookService {
       }
       return physicalBookWithUserBooks ;
      }
+
+    public Long getTotalClientPurchesBook() {
+       return this.physicalBookRepo.countDistinctUser();
+    }
+
+    public Double getTotalSales() {
+        return  this.physicalBookRepo.getTotalCopies()*5.0 ;
+    }
+
+    public Double getTotalSalesForCurrentMonth() {
+        return this.physicalBookRepo.findTotalSalesForCurrentMonth() * 5.0 ;
+    }
+
+    public Long findBookByStatus(String status) {
+        return this.physicalBookRepo.findAllByStatus(status);
+    }
+
+    public Double getTotalSalesForCurrentYear() {
+        return this.physicalBookRepo.findTotalSalesForCurrentYear() * 5.0;
+    }
 }

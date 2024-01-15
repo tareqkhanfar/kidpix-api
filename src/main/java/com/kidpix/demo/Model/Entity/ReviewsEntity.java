@@ -24,10 +24,10 @@ public class ReviewsEntity {
     @Column(name = "theme_name")
     private String themeName ;
 
-
-
     @Column(name = "rating_date")
     private Date ratingDate ;
 
+    @Column(name = "review_txt" , length = 2000)
+    private String review ;
 
 }
