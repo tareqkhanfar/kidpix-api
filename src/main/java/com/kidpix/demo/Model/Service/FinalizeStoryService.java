@@ -2,10 +2,12 @@ package com.kidpix.demo.Model.Service;
 
 
 import com.kidpix.demo.Model.DTO.FinalizeStoryDTO;
+import com.kidpix.demo.Model.Entity.BookEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.InputStreamReader;
 import java.util.StringJoiner;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,18 +19,37 @@ public class FinalizeStoryService {
     @Autowired
     private CategoryService categoryService ;
 
+    @Autowired
+    private BookService bookService ;
+
+    @Value("${prefix.scribus.path}")
+    private String prefixScribusPath ;
+
     @Value("${scribus.path}")
     private String scribusPath;
 
     @Value("${script.path}")
     private String scriptPath;
 
-    @Value("${script.sla.path}")
-    private String slaPath;
+    @Value("${animegan.seperator}")
+    private String seperator_slash;
+
+
+
 
     @Value("${output.pdf.path}")
     private String outputPdfPath;
     public String createStorybook(FinalizeStoryDTO request) {
+
+     String outputPDF = outputPdfPath + System.currentTimeMillis() +"__"+request.getKidName()+"__"+request.getThemeName()+seperator_slash;
+        File file = new File(outputPDF) ;
+        if (!file.exists()){
+            file.mkdirs();
+            System.out.println("Created Folder Sucessfully : " + outputPDF);
+        }
+        outputPDF += request.getThemeName()+"__"+request.getKidName()+".pdf";
+
+        BookEntity bookEntity = this.bookService.findBookById(request.getBookId()) ;
 
         String scribusThemPath = this.categoryService.findByName(request.getThemeName());
         try {
@@ -43,8 +64,27 @@ public class FinalizeStoryService {
                     " --listStory " + storyJoiner.toString() +
                     " --listImages " + imageJoiner.toString() +
                     " --script_path \"" + scribusThemPath + "\"" +
-                    " --output_path \"" + outputPdfPath + "\"";
-            ProcessBuilder builder = new ProcessBuilder("/bin/bash", "/c", command);
+                    " --output_path \"" + outputPDF + "\"";
+
+            String[] command2 = {
+                    prefixScribusPath ,
+                    scribusPath,
+                    "-g",
+                    "--python-script",
+                    scriptPath,
+                    "--kid_name",
+                    request.getKidName(),
+                    "--listStory",
+                    storyJoiner.toString(),
+                    "--listImages",
+                    imageJoiner.toString(),
+                    "--script_path",
+                    scribusThemPath,
+                    "--output_path",
+                    outputPdfPath
+            };
+
+            ProcessBuilder builder = new ProcessBuilder(command2);
             builder.redirectErrorStream(true);
             Process p = builder.start();
             BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
@@ -55,7 +95,7 @@ public class FinalizeStoryService {
                 System.out.println(line);
             }
 
-            return "URL to the PDF file"; // Modify this to return the actual URL
+            return outputPDF; // Modify this to return the actual URL
         } catch (Exception e) {
             e.printStackTrace();
             return "Error occurred";

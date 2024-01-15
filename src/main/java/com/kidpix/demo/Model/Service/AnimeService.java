@@ -19,6 +19,8 @@ public class AnimeService {
     @Value("${animegan.python.env.path}")
     private String pythonEnvPath;
 
+
+
     @Value("${animegan.script.path}")
     private String scriptPath;
 
@@ -63,9 +65,7 @@ if (!outDir.exists()){
         if (files != null) {
             for (File file : files) {
                 System.out.println(file.getAbsolutePath());
-                System.out.println(file.getAbsoluteFile());
-                System.out.println(file.getCanonicalFile());
-                fileNames.add(outputFilename+seperator_slash+file.getName());
+                fileNames.add(file.getAbsolutePath());
             }
 
             }
