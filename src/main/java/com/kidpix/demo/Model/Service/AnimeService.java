@@ -84,6 +84,10 @@ if (!outDir.exists()){
         String scriptPath = Paths.get(this.scriptPath).toAbsolutePath().toString();
         String checkpointDir = Paths.get(this.checkpointDir).toAbsolutePath().toString();
 
+
+        System.out.println("Python Script : "+pythonEnvPath);
+        System.out.println("Script GAN : "+scriptPath);
+        System.out.println("checkPoint : "+checkpointDir);
         String[] command = {
                 pythonEnvPath,
                 scriptPath,

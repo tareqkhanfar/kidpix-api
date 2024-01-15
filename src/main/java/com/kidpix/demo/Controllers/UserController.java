@@ -112,11 +112,24 @@ catch (Exception exception ) {
         }
     }
 
+    @PostMapping("/changePassword")
+    public ResponseEntity<String> changePassword(@RequestBody Map<String , String> map) {
+        boolean flag = this.userService.changePassword(map.get("email") , map.get("password"));
+
+        if (flag) {
+            return ResponseEntity.ok("Password has been Changed Successfully .") ;
+        }
+        else {
+            return ResponseEntity.badRequest().body("User Not Found .");
+        }
+    }
+
     @GetMapping("/getAllUsers")
     public ResponseEntity<List<UserDTO>> getAllUsers(){
         List<UserDTO> userDTOList = this.userService.getAllUsers().stream().map(this::toDTO).collect(Collectors.toList());
         return ResponseEntity.ok(userDTOList);
     }
+
 
 
     private UserDTO toDTO(UserEntity save) {

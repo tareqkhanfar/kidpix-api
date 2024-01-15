@@ -90,4 +90,14 @@ public class UserService {
     public UserEntity getUserById(Long userId) {
         return this.userRepo.findById(userId).get();
     }
+
+    public boolean changePassword(String email, String password) {
+        UserEntity userEntity = this.userRepo.findByEmail(email);
+        if (userEntity != null) {
+            userEntity.setPassword(password);
+             this.userRepo.save(userEntity);
+             return true ;
+        }
+        return false ;
+    }
 }

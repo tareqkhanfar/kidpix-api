@@ -23,4 +23,8 @@ public class CategoryService {
     public CategoryEntity findCatById(Long catId){
         return this.categoryRepo.findById(catId).get();
     }
+
+    public String findByName(String themeName) {
+       return this.categoryRepo.findByNameCatName(themeName);
+    }
 }

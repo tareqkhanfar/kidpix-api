@@ -35,4 +35,8 @@ public class CategoryEntity {
     @OneToMany(mappedBy = "category" , cascade = CascadeType.ALL , fetch = FetchType.LAZY)
     private List<BookEntity > bookEntities ;
 
+
+    @Column(name =  "scribus_path")
+   private String scribus_path ;
+
 }
