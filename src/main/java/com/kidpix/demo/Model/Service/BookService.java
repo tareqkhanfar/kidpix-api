@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.awt.print.Book;
+import java.time.LocalDate;
+import java.util.Date;
 
 @Service
 public class BookService {
@@ -22,6 +24,7 @@ public class BookService {
 
     public BookEntity createBook(BookEntity bookEntity) {
         bookEntity.setStatus("Pending");
+        bookEntity.setCreatedBook(new Date());
       return bookRepository.save(bookEntity);
 
     }
@@ -43,7 +46,17 @@ public class BookService {
         return this.bookRepository.findById(bookId).get();
     }
 
-    public Integer findBookByStatus(String status) {
-       return this.bookRepository.findAllByStatus(status).size() ;
+
+
+    public Long totalBookInCurrentMonth() {
+        return this.bookRepository.findTotalSalesForCurrentMonth() ;
+    }
+
+    public Long totalBookInCurrentYear() {
+        return this.bookRepository.findTotalSalesForCurrentYear() ;
+    }
+
+    public Long totalClientPurchesDigitalBook() {
+       return this.bookRepository.totalUsersPurchesBook();
     }
 }

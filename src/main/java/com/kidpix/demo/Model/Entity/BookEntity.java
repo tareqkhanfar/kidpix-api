@@ -4,6 +4,7 @@ package com.kidpix.demo.Model.Entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -40,12 +41,13 @@ public class BookEntity  {
     @Column(name = "status")
     private String status ;
 
+    @Column(name = "created_book")
+    private Date createdBook;
+
 
     @ManyToOne
     @JoinColumn(name = "cat_id")
     private CategoryEntity category ;
-
-
 
 
     @ManyToOne

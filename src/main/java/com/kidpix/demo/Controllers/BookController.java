@@ -77,7 +77,19 @@ return outputfile.getAbsolutePath();
     }
 
 
+    @GetMapping("/totalDigitalBooksCurrentMonth")
+    public ResponseEntity<Long> totalDigitalBooks() {
+        return ResponseEntity.ok(this.bookService.totalBookInCurrentMonth());
+    }
 
+    @GetMapping("/totalDigitalBooksCurrentYear")
+    public ResponseEntity<Long> totalDigitalYear() {
+        return ResponseEntity.ok(this.bookService.totalBookInCurrentYear());
+    }
+    @GetMapping("/totalClientPurchesDigitalBook")
+    public ResponseEntity<Long> totalClientPurchesDigitalBook() {
+        return ResponseEntity.ok(this.bookService.totalClientPurchesDigitalBook());
+    }
 
     public BookEntity convertToEntity(BookDTO bookDTO) {
         BookEntity bookEntity = new BookEntity();
@@ -90,6 +102,7 @@ return outputfile.getAbsolutePath();
         bookEntity.setUser(userService.getUserInfoByEmail(bookDTO.getUserEmail()));
         bookEntity.setAge(bookDTO.getAge());
         bookEntity.setStatus(bookDTO.getStatus());
+        bookEntity.setCreatedBook(bookDTO.getCreatedBook());
         // Map other fields as necessary
         return bookEntity;
     }
@@ -105,6 +118,7 @@ return outputfile.getAbsolutePath();
         bookDTO.setUserEmail(bookEntity.getUser().getEmail());
         bookDTO.setAge(bookEntity.getAge());
         bookDTO.setStatus(bookEntity.getStatus());
+        bookDTO.setCreatedBook(bookEntity.getCreatedBook());
         return bookDTO;
     }
 
