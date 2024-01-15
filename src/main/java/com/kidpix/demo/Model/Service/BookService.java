@@ -1,5 +1,7 @@
 package com.kidpix.demo.Model.Service;
 
+import com.kidpix.demo.Model.DTO.BookDTO;
+import com.kidpix.demo.Model.DTO.ResponseDigitalBooksDTO;
 import com.kidpix.demo.Model.Entity.BookEntity;
 import com.kidpix.demo.Model.Entity.SceneEntity;
 import com.kidpix.demo.Model.Repositories.BookRepository;
@@ -11,6 +13,8 @@ import org.springframework.stereotype.Service;
 import java.awt.print.Book;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 
 @Service
 public class BookService {
@@ -58,5 +62,19 @@ public class BookService {
 
     public Long totalClientPurchesDigitalBook() {
        return this.bookRepository.totalUsersPurchesBook();
+    }
+
+    public List<ResponseDigitalBooksDTO>getAllBooks() {
+        List<ResponseDigitalBooksDTO> responseDigitalBooksDTOS = new LinkedList<>() ;
+        List<BookEntity> bookEntities = this.bookRepository.findAll();
+        for (BookEntity bookEntity : bookEntities) {
+            ResponseDigitalBooksDTO digitalBooksDTO = new ResponseDigitalBooksDTO() ;
+           digitalBooksDTO.setCreatedBook(bookEntity.getCreatedBook());
+           digitalBooksDTO.setUsername(bookEntity.getUser().getUserName());
+           digitalBooksDTO.setEmail(bookEntity.getUser().getEmail());
+           digitalBooksDTO.setThemeName(bookEntity.getCategory().getCatName());
+            responseDigitalBooksDTOS.add(digitalBooksDTO);
+        }
+        return responseDigitalBooksDTOS ;
     }
 }

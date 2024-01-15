@@ -46,6 +46,23 @@ public class UserService {
         }
         return userEntity;
     }
+    public UserEntity Adminlogin(UserDTO userDTO) throws IllegalArgumentException {
+
+        UserEntity userEntity = this.userRepo.findByEmail(userDTO.getEmail());
+
+        if (userEntity == null || !userDTO.getPassword().equals(userEntity.getPassword()) || !userDTO.getEmail().equals(userEntity.getEmail())) {
+            throw new IllegalArgumentException("Invalid username or password");
+        }
+
+        if (userEntity.getIsAdmin() != 0){
+            return userEntity ;
+        }
+        else {
+            throw new IllegalArgumentException("Invalid username or password");
+
+        }
+
+    }
 
     public UserEntity getUserInfoByEmail(String email) {
         UserEntity userEntity = this.userRepo.findByEmail(email);

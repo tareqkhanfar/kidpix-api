@@ -2,6 +2,7 @@ package com.kidpix.demo.Controllers;
 
 import com.kidpix.demo.Model.DTO.BookDTO;
 import com.kidpix.demo.Model.DTO.CategoryAssignmentDTO;
+import com.kidpix.demo.Model.DTO.ResponseDigitalBooksDTO;
 import com.kidpix.demo.Model.Entity.BookEntity;
 import com.kidpix.demo.Model.Service.BookService;
 import com.kidpix.demo.Model.Service.UserService;
@@ -16,6 +17,7 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Base64;
+import java.util.List;
 
 
 @RequestMapping("/api/book")
@@ -53,6 +55,10 @@ public class BookController {
         return ResponseEntity.ok(convertToDTO(savedBook));
     }
 
+    @GetMapping("/getAllDigitalBooks")
+ public ResponseEntity<List<ResponseDigitalBooksDTO>> bookDTOResponseEntity() {
+      return  ResponseEntity.ok(this.bookService.getAllBooks()) ;
+    }
     private String DecodeImage(String bookPath, String fileExtension , String userEmail) throws IOException {
         BufferedImage image = null;
         byte[] imageByte;
@@ -67,6 +73,8 @@ public class BookController {
 
 return outputfile.getAbsolutePath();
     }
+
+
 
     @PostMapping("/addCategoryToBook")
     public ResponseEntity<String> addSceneToBook(@RequestBody CategoryAssignmentDTO categoryAssignmentDTO) {

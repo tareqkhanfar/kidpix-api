@@ -28,6 +28,7 @@ public class PhysicalBookService {
       List<PhysicalBookWithUserBook> physicalBookWithUserBooks = new LinkedList<>() ;
       for (PhysicalBookEntity physicalBookEntity : physicalBookEntities){
           PhysicalBookWithUserBook userBook = new PhysicalBookWithUserBook();
+          userBook.setPhysicalBookId(physicalBookEntity.getPhysicalBookId());
           userBook.setThemeName(physicalBookEntity.getBook().getCategory().getCatName());
           userBook.setUserName(physicalBookEntity.getUser().getUserName());
           userBook.setNumCopies(physicalBookEntity.getNumCopies());
@@ -58,5 +59,21 @@ public class PhysicalBookService {
 
     public Double getTotalSalesForCurrentYear() {
         return this.physicalBookRepo.findTotalSalesForCurrentYear() * 5.0;
+    }
+
+    public PhysicalBookEntity changeStatus(Long bookId, String status) {
+        PhysicalBookEntity bookEntity = this.physicalBookRepo.findById(bookId).get();
+        if (status.trim().equalsIgnoreCase("Ordered")){
+            bookEntity.setStatus("Pending");
+        }
+        else if (status.trim().equalsIgnoreCase("pending")){
+            bookEntity.setStatus("Shipped");
+
+        }
+        else if (status.trim().equalsIgnoreCase("shipped")){
+            bookEntity.setStatus("Delivered");
+
+        }
+       return this.physicalBookRepo.save(bookEntity);
     }
 }

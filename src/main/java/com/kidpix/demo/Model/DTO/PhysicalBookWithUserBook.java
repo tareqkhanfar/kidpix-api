@@ -7,6 +7,7 @@ import java.util.Date;
 @Data
 public class PhysicalBookWithUserBook {
 
+    private Long physicalBookId ;
     private String userName ;
     private String userEmail;
 

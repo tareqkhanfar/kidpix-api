@@ -44,7 +44,6 @@ catch (Exception exception ) {
     public ResponseEntity<Object> login(@Validated @RequestBody UserDTO userDTO) {
     try {
 
-
         UserDTO userEntity =toDTO(userService.login(userDTO));
         return new ResponseEntity<>(userEntity, HttpStatus.OK);
     }
@@ -55,6 +54,21 @@ catch (Exception exception ) {
 
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
+    }
+
+    @PostMapping("/adminLogin")
+    public ResponseEntity<Object> Adminlogin(@Validated @RequestBody UserDTO userDTO) {
+        try {
+            UserDTO userEntity =toDTO(userService.Adminlogin(userDTO));
+            return new ResponseEntity<>(userEntity, HttpStatus.OK);
+        }
+        catch (IllegalArgumentException e  ){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        catch (Exception exception ) {
+
+            return new ResponseEntity<>(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @GetMapping("/getUserInfoByEmail")

@@ -11,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RequestMapping("/api/physicalbook")
 @RestController
@@ -29,11 +31,22 @@ public class PhysicalBookController {
 
 
 
+
     @PostMapping
     public PhysicalBookDto createPhysicalBook(@RequestBody PhysicalBookDto physicalBookDto) {
         PhysicalBookEntity entity = convertToEntity(physicalBookDto);
         entity = physicalBookService.createPhysicalBook(entity);
         return convertToDto(entity);
+    }
+
+
+    @PostMapping("/changeStatus")
+    public ResponseEntity<Map<String , Object>> changeStatus (@RequestBody Map<String, String> requestData){
+       PhysicalBookEntity physicalBookEntity =  this.physicalBookService.changeStatus(Long.parseLong(requestData.get("bookId")) , requestData.get("status"));
+       Map<String , Object> map = new HashMap<>() ;
+       map.put("bookId" , physicalBookEntity.getPhysicalBookId());
+       map.put("status" , physicalBookEntity.getStatus());
+       return  ResponseEntity.ok(map);
     }
 
     @GetMapping("/getPhysicalBooks")
