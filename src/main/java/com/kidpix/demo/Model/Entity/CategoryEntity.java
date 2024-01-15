@@ -39,4 +39,7 @@ public class CategoryEntity {
     @Column(name =  "scribus_path")
    private String scribus_path ;
 
+    @Column(name =  "theme_dir_path")
+    private String ThemeDirPath ;
+
 }

@@ -72,6 +72,8 @@ public class BookService {
            digitalBooksDTO.setCreatedBook(bookEntity.getCreatedBook());
            digitalBooksDTO.setUsername(bookEntity.getUser().getUserName());
            digitalBooksDTO.setEmail(bookEntity.getUser().getEmail());
+
+           System.out.println(bookEntity.getBook_id());
            digitalBooksDTO.setThemeName(bookEntity.getCategory().getCatName());
             responseDigitalBooksDTOS.add(digitalBooksDTO);
         }

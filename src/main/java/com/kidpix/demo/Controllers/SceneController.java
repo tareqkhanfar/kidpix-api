@@ -50,9 +50,13 @@ public class SceneController {
                 .collect(Collectors.toList());
         return ResponseEntity.ok(dtoList);
     }
-    @GetMapping("/category/{category}")
-    public ResponseEntity<List<SceneDTO>> getScenesByCategory(@PathVariable Long category) {
+    @GetMapping("/category/{category}/{NAME}")
+    public ResponseEntity<List<SceneDTO>> getScenesByCategory(@PathVariable("category") Long category , @PathVariable("NAME") String Name) {
         List<SceneEntity> scenes = sceneService.getScenesByCategory(category);
+        for (SceneEntity  sceneEntity : scenes) {
+           sceneEntity.setDefualtStoryText(sceneEntity.getDefualtStoryText().replaceAll("\\[NAME\\]", Name) );
+
+        }
         List<SceneDTO> dtoList = scenes.stream()
                 .map(SceneController::convertEntityToDTO)
                 .collect(Collectors.toList());
