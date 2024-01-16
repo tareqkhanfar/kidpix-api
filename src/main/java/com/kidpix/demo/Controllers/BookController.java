@@ -74,6 +74,14 @@ public class BookController {
 return outputfile.getAbsolutePath();
     }
 
+    /*
+    @GetMapping("/getAllBooksForUser/{email}")
+    public ResponseEntity<List<BookDTO>>getAllBooksForUser(@PathVariable("email") String email) {
+       return this.bookService.getAllBooksForUser(email) ;
+    }
+
+     */
+
 
 
     @PostMapping("/addCategoryToBook")

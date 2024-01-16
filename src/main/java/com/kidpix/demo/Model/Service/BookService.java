@@ -79,4 +79,8 @@ public class BookService {
         }
         return responseDigitalBooksDTOS ;
     }
+
+    public void getAllBooksForUser(String email) {
+        // this.bookRepository.getAllBooksForUser(email) ;
+    }
 }
