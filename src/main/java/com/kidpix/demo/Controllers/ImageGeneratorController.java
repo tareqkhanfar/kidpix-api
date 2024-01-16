@@ -19,7 +19,9 @@ public class ImageGeneratorController {
 
     @PostMapping
     public ResponseEntity<?> generateImage (@RequestBody ImageGeneratorDTO imageGeneratorDTO){
-        return  ResponseEntity.ok(this.imageGeneratorService.generateImage(imageGeneratorDTO));
+
+        String s = this.imageGeneratorService.generateImage(imageGeneratorDTO).replaceAll("/var/www/html" , "http://206.81.27.175") ;
+        return  ResponseEntity.ok(s);
     }
 
 
