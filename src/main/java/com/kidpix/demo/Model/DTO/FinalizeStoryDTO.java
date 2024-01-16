@@ -10,6 +10,6 @@ public class FinalizeStoryDTO {
         private String kidName;
         private String themeName;
         private List<String> storyList;
-        private List<String> imageUrls;
+        private String imageUrls;
 
 }

@@ -52,17 +52,22 @@ public class FinalizeStoryService {
         BookEntity bookEntity = this.bookService.findBookById(request.getBookId()) ;
 
         String scribusThemPath = this.categoryService.findByName(request.getThemeName());
+        System.out.println("Scribus Path Theme : " + scribusThemPath);
         try {
-            StringJoiner storyJoiner = new StringJoiner("\" \"", "\"", "\"");
+
+            StringBuilder stringBuilder = new StringBuilder() ;
+
+
+
+            StringJoiner storyJoiner = new StringJoiner("[[ ]]", "[[", "]]");
             request.getStoryList().forEach(storyJoiner::add);
 
-            StringJoiner imageJoiner = new StringJoiner("\" \"", "\"", "\"");
-            request.getImageUrls().forEach(imageJoiner::add);
 
-            String command = scribusPath + " -g --python-script " + scriptPath +
+
+            String commandd = scribusPath + " -g --python-script " + scriptPath +
                     " --kid_name \"" + request.getKidName() + "\"" +
                     " --listStory " + storyJoiner.toString() +
-                    " --listImages " + imageJoiner.toString() +
+                    " --listImages " + request.getImageUrls().toString() +
                     " --script_path \"" + scribusThemPath + "\"" +
                     " --output_path \"" + outputPDF + "\"";
 
@@ -77,14 +82,21 @@ public class FinalizeStoryService {
                     "--listStory",
                     storyJoiner.toString(),
                     "--listImages",
-                    imageJoiner.toString(),
+                    request.getImageUrls().toString(),
                     "--script_path",
                     scribusThemPath,
                     "--output_path",
-                    outputPdfPath
+                    outputPDF
             };
 
+
+            String temp = "" ;
+            for (String s : command2 ) {
+                temp+=s ;
+            }
+            System.out.println("Commadn  : "+temp);
             ProcessBuilder builder = new ProcessBuilder(command2);
+            builder.inheritIO();
             builder.redirectErrorStream(true);
             Process p = builder.start();
             BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
