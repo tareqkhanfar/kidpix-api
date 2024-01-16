@@ -18,7 +18,7 @@ public class UserService {
 
     public UserEntity signUP(UserDTO userDTO) {
 
-
+        //For signUp
         UserEntity userEntity = userRepo.findByEmail(userDTO.getEmail().trim());
         if (userEntity != null) {
             throw  new IllegalArgumentException("This  Account already exist ! ") ;
