@@ -32,8 +32,6 @@ public class AnimeService {
     private String outputDir;
 
 
-    @Value("${animegan.seperator}")
-    private String seperator_slash;
 
 
 
@@ -44,7 +42,7 @@ public class AnimeService {
 
 System.out.println("input data : " + requestApi.getDirImagesInput());
 
-File outDir = new File(outputDir+outputFilename+seperator_slash) ;
+File outDir = new File(outputDir+outputFilename+File.separator) ;
 
 if (!outDir.exists()){
     outDir.mkdirs();
@@ -58,7 +56,7 @@ if (!outDir.exists()){
 
         List<String> fileNames = new LinkedList<>();
 
-        File outDirectory = new File(outputDir+outputFilename+seperator_slash);
+        File outDirectory = new File(outputDir+outputFilename+File.separator);
         File[] files = outDirectory.listFiles();
 
         System.out.println("size of result : " + files.length);

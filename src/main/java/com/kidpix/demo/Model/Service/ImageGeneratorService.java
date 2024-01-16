@@ -1,6 +1,8 @@
 package com.kidpix.demo.Model.Service;
 
+import com.kidpix.demo.Model.DTO.FinalizeStoryDTO;
 import com.kidpix.demo.Model.DTO.ImageGeneratorDTO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -30,8 +32,7 @@ public class ImageGeneratorService {
     @Value("${animegan.output.dir}")
     private String animeGanOutputDir;
 
-    @Value("${animegan.seperator}")
-    private String animeGanSeperatorSlash;
+
 
 
     //faceSwap
@@ -44,9 +45,12 @@ public class ImageGeneratorService {
     @Value("${faceswap.output.dir}")
     private String faceSwapOutputDir;
 
+    @Autowired
+    private FinalizeStoryService storyService ;
 
 
-    public List<String> generateImage(ImageGeneratorDTO imageGeneratorDTO) {
+
+    public String generateImage(ImageGeneratorDTO imageGeneratorDTO) {
 
         String kidName = imageGeneratorDTO.getKidName();
         String imageInputPath = imageGeneratorDTO.getImageInputPath();
@@ -57,11 +61,17 @@ public class ImageGeneratorService {
 
         System.out.println("[DEGUB.IMAGEGEN] outputDir : " + outputDir);
 
-        List<String> fileNames = runAnimeGanScript(outputDir, kidName);
+        String outputAnimeDir = runAnimeGanScript(outputDir, kidName);
+        FinalizeStoryDTO finalizeStoryDTO = new FinalizeStoryDTO() ;
+        finalizeStoryDTO.setStoryList(imageGeneratorDTO.getStoryList());
+        finalizeStoryDTO.setThemeName(imageGeneratorDTO.getThemeName());
+        finalizeStoryDTO.setKidName(imageGeneratorDTO.getKidName());
+        finalizeStoryDTO.setBookId(imageGeneratorDTO.getBookId());
+        finalizeStoryDTO.setImageUrls(outputAnimeDir);
 
-        System.out.println("[DEGUB.IMAGEGEN] fileNames : " + fileNames);
 
-        return fileNames;
+        System.out.println("[DEGUB.IMAGEGEN] fileNames : " + outputAnimeDir);
+        return storyService.createStorybook(finalizeStoryDTO) ;
 
     }
 
@@ -86,7 +96,7 @@ public class ImageGeneratorService {
         executeFaceSwapScript(imageInputPath, themeName, faceSwapOutputDir + File.separator + outputFilename);
 
         System.out.println("[DEGUB.IMAGEGEN.FACESWAP] finished executing script ?? ");
-
+         System.out.println("Output Dir From FaceSwap : " +faceSwapOutputDir + File.separator + outputFilename );
         return faceSwapOutputDir + File.separator + outputFilename;
 
 
@@ -137,37 +147,27 @@ public class ImageGeneratorService {
 
     }
 
-    private List<String> runAnimeGanScript(String dirImagesInput, String kidName) {
+    private String runAnimeGanScript(String dirImagesInput, String kidName) {
 
         String outputFilename = "outputAnime_" + System.currentTimeMillis() + "_" + kidName;
 
         System.out.println("input data : " + dirImagesInput);
 
-        File outDir = new File(animeGanOutputDir + File.separator + outputFilename + animeGanSeperatorSlash);
+        File outDir = new File(animeGanOutputDir + File.separator + outputFilename + File.separator);
 
         if (!outDir.exists()) {
             outDir.mkdirs();
             System.out.println("created folder successfully . ");
         }
 
-        executeAnimeGANScript(dirImagesInput, animeGanOutputDir + File.separator + outputFilename + animeGanSeperatorSlash);
+        executeAnimeGANScript(dirImagesInput, animeGanOutputDir + File.separator + outputFilename + File.separator);
 
         System.out.println("test 2 ");
 
-        List<String> fileNames = new LinkedList<>();
 
+      System.out.println("OutputDir  from Anime GAN : " +animeGanOutputDir + File.separator +outputFilename );
 
-        File[] files = outDir.listFiles();
-
-        assert files != null;
-        System.out.println("size of result : " + files.length);
-
-        for (File file : files) {
-            System.out.println(file.getAbsolutePath());
-            fileNames.add(file.getAbsolutePath());
-        }
-
-        return fileNames;
+        return animeGanOutputDir + File.separator +outputFilename;
 
     }
 

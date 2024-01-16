@@ -31,8 +31,7 @@ public class FinalizeStoryService {
     @Value("${script.path}")
     private String scriptPath;
 
-    @Value("${animegan.seperator}")
-    private String seperator_slash;
+
 
 
 
@@ -41,7 +40,7 @@ public class FinalizeStoryService {
     private String outputPdfPath;
     public String createStorybook(FinalizeStoryDTO request) {
 
-     String outputPDF = outputPdfPath + System.currentTimeMillis() +"__"+request.getKidName()+"__"+request.getThemeName()+seperator_slash;
+     String outputPDF = outputPdfPath + System.currentTimeMillis() +"__"+request.getKidName()+"__"+request.getThemeName()+File.separator;
         File file = new File(outputPDF) ;
         if (!file.exists()){
             file.mkdirs();
