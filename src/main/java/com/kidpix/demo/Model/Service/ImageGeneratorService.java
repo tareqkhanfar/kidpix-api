@@ -61,21 +61,16 @@ public class ImageGeneratorService {
 
         System.out.println("[DEGUB.IMAGEGEN] outputDir : " + outputDir);
 
-
-        if (imageGeneratorDTO.getWantAnime() ==1){
-            outputDir = runAnimeGanScript(outputDir, kidName);
-        }
-
-
+        String outputAnimeDir = runAnimeGanScript(outputDir, kidName);
         FinalizeStoryDTO finalizeStoryDTO = new FinalizeStoryDTO() ;
         finalizeStoryDTO.setStoryList(imageGeneratorDTO.getStoryList());
         finalizeStoryDTO.setThemeName(imageGeneratorDTO.getThemeName());
         finalizeStoryDTO.setKidName(imageGeneratorDTO.getKidName());
         finalizeStoryDTO.setBookId(imageGeneratorDTO.getBookId());
-        finalizeStoryDTO.setImageUrls(outputDir);
+        finalizeStoryDTO.setImageUrls(outputAnimeDir);
 
 
-        System.out.println("[DEGUB.IMAGEGEN] fileNames : " + outputDir);
+        System.out.println("[DEGUB.IMAGEGEN] fileNames : " + outputAnimeDir);
         return storyService.createStorybook(finalizeStoryDTO) ;
 
     }
