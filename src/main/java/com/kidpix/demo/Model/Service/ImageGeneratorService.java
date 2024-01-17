@@ -2,6 +2,8 @@ package com.kidpix.demo.Model.Service;
 
 import com.kidpix.demo.Model.DTO.FinalizeStoryDTO;
 import com.kidpix.demo.Model.DTO.ImageGeneratorDTO;
+import com.kidpix.demo.Model.Entity.BookEntity;
+import com.kidpix.demo.Model.Entity.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -48,6 +50,15 @@ public class ImageGeneratorService {
     @Autowired
     private FinalizeStoryService storyService ;
 
+    @Autowired
+    private CategoryService categoryService ;
+
+    @Autowired
+    private BookService bookService ;
+
+    @Autowired
+    private EmailService emailService ;
+
 
 
     public String generateImage(ImageGeneratorDTO imageGeneratorDTO) {
@@ -56,28 +67,41 @@ public class ImageGeneratorService {
         String imageInputPath = imageGeneratorDTO.getImageInputPath();
         String themeName = imageGeneratorDTO.getThemeName();
 
-
         String outputDir = runFaceSwapScript(imageInputPath, themeName, kidName);
-
+//String outputDir = "/var/www/html/assets/bundles/superman/" ;
         System.out.println("[DEGUB.IMAGEGEN] outputDir : " + outputDir);
 
-        String outputAnimeDir = runAnimeGanScript(outputDir, kidName);
+
+
+        if (imageGeneratorDTO.getWant_anime() == 1) {
+            outputDir = runAnimeGanScript(outputDir, kidName);
+        }
         FinalizeStoryDTO finalizeStoryDTO = new FinalizeStoryDTO() ;
         finalizeStoryDTO.setStoryList(imageGeneratorDTO.getStoryList());
         finalizeStoryDTO.setThemeName(imageGeneratorDTO.getThemeName());
         finalizeStoryDTO.setKidName(imageGeneratorDTO.getKidName());
         finalizeStoryDTO.setBookId(imageGeneratorDTO.getBookId());
-        finalizeStoryDTO.setImageUrls(outputAnimeDir);
+        finalizeStoryDTO.setImageUrls(outputDir);
 
+        String finalPath = storyService.createStorybook(finalizeStoryDTO) ;
 
-        System.out.println("[DEGUB.IMAGEGEN] fileNames : " + outputAnimeDir);
-        return storyService.createStorybook(finalizeStoryDTO) ;
+        BookEntity bookEntity = this.bookService.findBookById(imageGeneratorDTO.getBookId());
+        bookEntity.setBookPath(finalPath);
+        this.bookService.createBook(bookEntity);
+
+        System.out.println("[DEGUB.IMAGEGEN] fileNames : " + outputDir);
+        UserEntity userEntity = this.bookService.findBookById(imageGeneratorDTO.getBookId()).getUser() ;
+        this.emailService.sendBook(userEntity.getFirstName() +" " + userEntity.getLastName() ,userEntity.getEmail() , finalPath );
+        return finalPath ;
 
     }
 
 
     private String runFaceSwapScript(String imageInputPath, String themeName, String kidName) {
+///////////////////////////////////////////////////////////////////////////////////////
+        String themePath = this.categoryService.findThemePathByCatName(themeName) ;
 
+/////////////////////////////////////////////////////////////////////////////////////////
         String outputFilename = "outputFaceSwap_" + System.currentTimeMillis() + "_" + kidName;
 
         System.out.println("[DEGUB.FACESWAP] input data : " + imageInputPath);

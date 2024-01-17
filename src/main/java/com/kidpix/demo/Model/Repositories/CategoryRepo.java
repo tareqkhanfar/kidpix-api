@@ -10,4 +10,7 @@ public interface CategoryRepo extends JpaRepository<CategoryEntity, Long> {
 
     @Query("select c.scribus_path from CategoryEntity c  where c.catName=:themeName")
     String findByNameCatName(String themeName);
+
+    @Query("select c.ThemeDirPath from CategoryEntity c  where c.catName=:themeName")
+    String findThemePathByCatName(String themeName);
 }

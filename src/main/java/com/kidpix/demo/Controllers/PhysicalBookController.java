@@ -1,6 +1,7 @@
 package com.kidpix.demo.Controllers;
 
 
+import com.kidpix.demo.Model.DTO.BookCatDTO;
 import com.kidpix.demo.Model.DTO.PhysicalBookDto;
 import com.kidpix.demo.Model.DTO.PhysicalBookWithUserBook;
 import com.kidpix.demo.Model.Entity.PhysicalBookEntity;
@@ -75,7 +76,10 @@ public class PhysicalBookController {
     public ResponseEntity<Long> getStatusCount(@PathVariable("status") String  status){
         return ResponseEntity.ok( this.physicalBookService.findBookByStatus(status)) ;
     }
-
+    @GetMapping("/getAllBooksForUser/{email}")
+    public ResponseEntity<List<BookCatDTO>>getAllBooksForUser(@PathVariable("email") String email) {
+        return ResponseEntity.ok(this.physicalBookService.getAllBooksForUser(email));
+    }
     private PhysicalBookDto convertToDto(PhysicalBookEntity entity) {
         PhysicalBookDto dto = new PhysicalBookDto();
         dto.setPhysicalBookId(entity.getPhysicalBookId());

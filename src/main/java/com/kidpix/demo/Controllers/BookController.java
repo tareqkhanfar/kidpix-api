@@ -1,5 +1,6 @@
 package com.kidpix.demo.Controllers;
 
+import com.kidpix.demo.Model.DTO.BookCatDTO;
 import com.kidpix.demo.Model.DTO.BookDTO;
 import com.kidpix.demo.Model.DTO.CategoryAssignmentDTO;
 import com.kidpix.demo.Model.DTO.ResponseDigitalBooksDTO;
@@ -18,6 +19,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Base64;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @RequestMapping("/api/book")
@@ -74,13 +76,13 @@ public class BookController {
 return outputfile.getAbsolutePath();
     }
 
-    /*
+
     @GetMapping("/getAllBooksForUser/{email}")
-    public ResponseEntity<List<BookDTO>>getAllBooksForUser(@PathVariable("email") String email) {
-       return this.bookService.getAllBooksForUser(email) ;
+    public ResponseEntity<List<BookCatDTO>>getAllBooksForUser(@PathVariable("email") String email) {
+       return ResponseEntity.ok(this.bookService.getAllBooksForUser(email));
     }
 
-     */
+
 
 
 

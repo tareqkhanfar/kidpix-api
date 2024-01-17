@@ -27,4 +27,7 @@ public class CategoryService {
     public String findByName(String themeName) {
        return this.categoryRepo.findByNameCatName(themeName);
     }
+    public String findThemePathByCatName(String themeName ) {
+        return this.categoryRepo.findThemePathByCatName(themeName) ;
+    }
 }

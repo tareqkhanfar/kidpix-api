@@ -14,7 +14,6 @@ public class ImageGeneratorDTO {
     private List<String> storyList ;
     private Integer want_anime;
 
-    private Integer wantAnime ;
 
 
 }

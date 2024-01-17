@@ -3,6 +3,7 @@ package com.kidpix.demo.Model.Repositories;
 import com.kidpix.demo.Model.Entity.BookEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -14,4 +15,8 @@ public interface BookRepository extends JpaRepository<BookEntity, Long> {
     Long findTotalSalesForCurrentYear();
     @Query("SELECT COUNT(DISTINCT p.user) FROM BookEntity p")
     Long totalUsersPurchesBook() ;
+
+    @Query("SELECT b from BookEntity b where b.user.id = :userId")
+    List<BookEntity> getAllBooksForUser( Long userId);
+
 }

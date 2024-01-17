@@ -1,7 +1,9 @@
 package com.kidpix.demo.Model.Service;
 
 
+import com.kidpix.demo.Model.DTO.BookCatDTO;
 import com.kidpix.demo.Model.DTO.PhysicalBookWithUserBook;
+import com.kidpix.demo.Model.Entity.BookEntity;
 import com.kidpix.demo.Model.Entity.PhysicalBookEntity;
 import com.kidpix.demo.Model.Repositories.PhysicalBookRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,9 @@ public class PhysicalBookService {
 
     @Autowired
     private PhysicalBookRepo physicalBookRepo ;
+
+    @Autowired
+    private UserService userService ;
     public PhysicalBookEntity createPhysicalBook(PhysicalBookEntity entity) {
         entity.setStatus("Pending");
         entity.setRequestDate(new Date());
@@ -75,5 +80,23 @@ public class PhysicalBookService {
 
         }
        return this.physicalBookRepo.save(bookEntity);
+    }
+
+    public List<BookCatDTO> getAllBooksForUser(String email) {
+        Long id =  this.userService.getUserInfoByEmail(email).getId();
+        List<PhysicalBookEntity> bookEntities =  this.physicalBookRepo.getAllBooksForUser(id) ;
+        List<BookCatDTO>bookCatDTOS = new LinkedList<>( );
+
+        for (PhysicalBookEntity entity : bookEntities) {
+            BookCatDTO dto = new BookCatDTO()  ;
+            dto.setBookPath(entity.getBook().getBookPath());
+            dto.setCreatationDate(entity.getRequestDate());
+            dto.setCatId(entity.getBook().getCategory().getCatID());
+            dto.setBookId(entity.getPhysicalBookId());
+            dto.setCatName(entity.getBook().getCategory().getCatName());
+            dto.setThemePath(entity.getBook().getCategory().getThemeImagePath());
+            bookCatDTOS.add(dto);
+        }
+        return bookCatDTOS;
     }
 }

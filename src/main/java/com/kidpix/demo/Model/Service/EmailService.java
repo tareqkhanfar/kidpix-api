@@ -37,6 +37,39 @@ public class EmailService {
         userService.insertSecurityCodeForUserByEmail(to ,code );
     }
 
+    public void sendBook(String userName , String to , String BookPath) {
+        BookPath =BookPath.replaceAll("/var/www/html" , "http://206.81.27.175") ;
+
+        System.out.println("to : " + to);
+        SimpleMailMessage message = new SimpleMailMessage();
+        String recipientName = userName; // Replace with the actual recipient's name
+        String bookLink = BookPath; // Replace with the actual link to the book
+        String yourName = "KidPix"; // Replace with your name
+        String yourContactInfo = "help@kidpix.com"; // Replace with your contact information
+        String emailMessage = String.format(
+                "Hello %s,\n" +
+                        "\n" +
+                        "I hope this message finds you well!\n" +
+                        "\n" +
+                        "We are thrilled to announce that your personalized KidPix StoryBook is ready and waiting for you! This unique book, crafted with your own photos and stories, promises to be a delightful journey through your cherished memories.\n" +
+                        "\n" +
+                        "To access your StoryBook, simply click on the following link: %s\n" +
+                        "\n" +
+                        "Warm regards,\n" +
+                        "\n" +
+                        "%s\n" +
+                        "KidPix Team\n" +
+                        "%s",
+                recipientName, bookLink, yourName, yourContactInfo
+        );
+
+        message.setFrom("tareq@asd.ps");
+        message.setTo(to);
+        message.setSubject("Your KidPix StoryBook is Ready!");
+        message.setText(emailMessage);
+        emailSender.send(message);
+    }
+
     private int generateSecurityCode() {
         Random random = new Random();
         int code = 100000 + random.nextInt(900000); // generates a 6-digit code

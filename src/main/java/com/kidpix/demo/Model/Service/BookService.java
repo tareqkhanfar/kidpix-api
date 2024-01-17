@@ -1,5 +1,6 @@
 package com.kidpix.demo.Model.Service;
 
+import com.kidpix.demo.Model.DTO.BookCatDTO;
 import com.kidpix.demo.Model.DTO.BookDTO;
 import com.kidpix.demo.Model.DTO.ResponseDigitalBooksDTO;
 import com.kidpix.demo.Model.Entity.BookEntity;
@@ -7,6 +8,7 @@ import com.kidpix.demo.Model.Entity.SceneEntity;
 import com.kidpix.demo.Model.Repositories.BookRepository;
 import com.kidpix.demo.Model.Repositories.SceneRepo;
 import jakarta.transaction.Transactional;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +20,9 @@ import java.util.List;
 
 @Service
 public class BookService {
+
+    @Autowired
+    private UserService userService ;
 
     @Autowired
     private BookRepository bookRepository ;
@@ -80,7 +85,21 @@ public class BookService {
         return responseDigitalBooksDTOS ;
     }
 
-    public void getAllBooksForUser(String email) {
-        // this.bookRepository.getAllBooksForUser(email) ;
+    public List<BookCatDTO> getAllBooksForUser(String email) {
+       Long id =  this.userService.getUserInfoByEmail(email).getId();
+       List<BookEntity> bookEntities =  this.bookRepository.getAllBooksForUser(id) ;
+       List<BookCatDTO>bookCatDTOS = new LinkedList<>( );
+
+       for (BookEntity entity : bookEntities) {
+           BookCatDTO dto = new BookCatDTO()  ;
+           dto.setBookPath(entity.getBookPath());
+           dto.setCreatationDate(entity.getCreatedBook());
+           dto.setCatId(entity.getCategory().getCatID());
+           dto.setBookId(entity.getBook_id());
+           dto.setCatName(entity.getCategory().getCatName());
+           dto.setThemePath(entity.getCategory().getThemeImagePath());
+           bookCatDTOS.add(dto);
+        }
+        return bookCatDTOS;
     }
 }

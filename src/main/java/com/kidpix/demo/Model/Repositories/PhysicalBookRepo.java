@@ -24,4 +24,7 @@ public interface PhysicalBookRepo extends JpaRepository<PhysicalBookEntity , Lon
     @Query("select count (*) from PhysicalBookEntity p where p.status= :status")
     Long findAllByStatus(String status) ;
 
+
+    @Query("SELECT b from PhysicalBookEntity b where b.user.id = :userId")
+    List<PhysicalBookEntity> getAllBooksForUser( Long userId);
 }
