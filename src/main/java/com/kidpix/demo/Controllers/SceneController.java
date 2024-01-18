@@ -112,7 +112,7 @@ public ResponseEntity<StoryTextDTO> storyTextToBook (@RequestBody StoryTextDTO s
         sceneDTO.setCategoryId(sceneEntity.getCategory().getCatID());
         sceneDTO.setPageNumber(sceneEntity.getPageNumber());
         sceneDTO.setDefualtStoryText(sceneEntity.getDefualtStoryText());
-
+        sceneDTO.setStory_text_ar(sceneEntity.getStory_txt_ar());
         return sceneDTO;
     }
 
@@ -124,6 +124,7 @@ public ResponseEntity<StoryTextDTO> storyTextToBook (@RequestBody StoryTextDTO s
         sceneEntity.setCategory(categoryRepo.findById(sceneDTO.getCategoryId()).get());
         sceneEntity.setPageNumber(sceneDTO.getPageNumber());
         sceneEntity.setDefualtStoryText(sceneDTO.getDefualtStoryText());
+        sceneEntity.setStory_txt_ar(sceneDTO.getStory_text_ar());
         return sceneEntity;
     }
 

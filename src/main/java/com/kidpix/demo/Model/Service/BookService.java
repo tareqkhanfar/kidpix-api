@@ -2,6 +2,7 @@ package com.kidpix.demo.Model.Service;
 
 import com.kidpix.demo.Model.DTO.BookCatDTO;
 import com.kidpix.demo.Model.DTO.BookDTO;
+import com.kidpix.demo.Model.DTO.FinalizeBookDTO;
 import com.kidpix.demo.Model.DTO.ResponseDigitalBooksDTO;
 import com.kidpix.demo.Model.Entity.BookEntity;
 import com.kidpix.demo.Model.Entity.SceneEntity;
@@ -101,5 +102,18 @@ public class BookService {
            bookCatDTOS.add(dto);
         }
         return bookCatDTOS;
+    }
+
+    public FinalizeBookDTO getBookData(Long bookId) {
+        FinalizeBookDTO  dto = new FinalizeBookDTO() ;
+      BookEntity bookEntity =   this.bookRepository.findById(bookId).get() ;
+
+      dto.setCreationDate(bookEntity.getCreatedBook());
+      dto.setThemeId(bookEntity.getCategory().getCatID());
+      dto.setCoverPage(bookEntity.getCategory().getThemeImagePath());
+      dto.setBookPath(bookEntity.getBookPath());
+      dto.setThemeName(bookEntity.getCategory().getCatName());
+      dto.setThemeDescription(bookEntity.getCategory().getDescription());
+      return dto ;
     }
 }

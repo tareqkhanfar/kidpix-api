@@ -13,8 +13,10 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.file.Paths;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ImageGeneratorService {
@@ -61,14 +63,31 @@ public class ImageGeneratorService {
 
 
 
-    public String generateImage(ImageGeneratorDTO imageGeneratorDTO) {
+    public Map<String , String> generateImage(ImageGeneratorDTO imageGeneratorDTO) {
 
         String kidName = imageGeneratorDTO.getKidName();
         String imageInputPath = imageGeneratorDTO.getImageInputPath();
         String themeName = imageGeneratorDTO.getThemeName();
 
-       String outputDir = runFaceSwapScript(imageInputPath, themeName, kidName);
-//String outputDir = "/var/www/html/assets/bundles/school/" ;
+      //String outputDir = runFaceSwapScript(imageInputPath, themeName, kidName);
+     String outputDir = "/var/www/html/assets/bundles/zoo/" ;
+
+        File outputDir__ = new File(outputDir);
+
+        // List all files in the directory
+        Map<String , String > stringStringMap = new LinkedHashMap<>();
+        File[] files = outputDir__.listFiles();
+        if (files != null) {
+            for (File file : files) {
+                if (file.isFile()) {
+                    if (file.getName().contains("Swap_0.png")){
+                       stringStringMap.put("coverPageAfterSwap" , file.getAbsolutePath());
+                    }
+                }
+            }
+        } else {
+            System.out.println("The specified path does not denote a directory.");
+        }
         System.out.println("[DEGUB.IMAGEGEN] outputDir : " + outputDir);
 
 
@@ -92,7 +111,11 @@ public class ImageGeneratorService {
         System.out.println("[DEGUB.IMAGEGEN] fileNames : " + outputDir);
         UserEntity userEntity = this.bookService.findBookById(imageGeneratorDTO.getBookId()).getUser() ;
         this.emailService.sendBook(userEntity.getFirstName() +" " + userEntity.getLastName() ,userEntity.getEmail() , finalPath );
-        return finalPath ;
+
+
+stringStringMap.put("finalPath" , finalPath) ;
+
+        return stringStringMap ;
 
     }
 
@@ -147,7 +170,8 @@ public class ImageGeneratorService {
         };
 
         ProcessBuilder processBuilder = new ProcessBuilder(command);
-        processBuilder.inheritIO();
+         processBuilder.inheritIO();
+
 
         try {
             Process process = processBuilder.start();
@@ -157,12 +181,14 @@ public class ImageGeneratorService {
 
             String line;
             while ((line = reader.readLine()) != null) {
-                System.out.println(line);
+
             }
 
             int exitCode = process.waitFor();
 
             System.out.println("[DEGUB.FACESWAP] Exited with code " + exitCode);
+
+
 
 
         } catch (IOException | InterruptedException e) {
