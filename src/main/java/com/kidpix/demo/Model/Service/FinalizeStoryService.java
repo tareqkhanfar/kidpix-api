@@ -55,7 +55,6 @@ public class FinalizeStoryService {
         System.out.println("Scribus Path Theme : " + scribusThemPath);
         try {
 
-            StringBuilder stringBuilder = new StringBuilder() ;
 
 
 
@@ -70,15 +69,20 @@ public class FinalizeStoryService {
                     " --listImages " + request.getImageUrls().toString() +
                     " --script_path \"" + scribusThemPath + "\"" +
                     " --output_path \"" + outputPDF + "\"";
-
+   if (request.getLang()==null || request.getLang().isEmpty()) {
+       request.setLang("en");
+   }
             String[] command2 = {
                     prefixScribusPath ,
                     scribusPath,
                     "-g",
                     "--python-script",
                     scriptPath,
+                    "--theme_name",
+                    request.getThemeName(),
                     "--kid_name",
                     request.getKidName(),
+                    "--lang",request.getLang(),
                     "--listStory",
                     storyJoiner.toString(),
                     "--listImages",

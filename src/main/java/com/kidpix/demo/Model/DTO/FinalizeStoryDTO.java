@@ -12,4 +12,6 @@ public class FinalizeStoryDTO {
         private List<String> storyList;
         private String imageUrls;
 
+        private String lang;
+
 }
