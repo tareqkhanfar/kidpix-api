@@ -69,8 +69,8 @@ public class ImageGeneratorService {
         String imageInputPath = imageGeneratorDTO.getImageInputPath();
         String themeName = imageGeneratorDTO.getThemeName();
 
-      //String outputDir = runFaceSwapScript(imageInputPath, themeName, kidName);
-     String outputDir = "/var/www/html/assets/bundles/zoo/" ;
+      String outputDir = runFaceSwapScript(imageInputPath, themeName, kidName);
+    // String outputDir = "/var/www/html/assets/bundles/zoo/" ;
 
         File outputDir__ = new File(outputDir);
 
@@ -102,6 +102,7 @@ public class ImageGeneratorService {
         finalizeStoryDTO.setKidName(imageGeneratorDTO.getKidName());
         finalizeStoryDTO.setBookId(imageGeneratorDTO.getBookId());
         finalizeStoryDTO.setImageUrls(outputDir);
+        finalizeStoryDTO.setLang(imageGeneratorDTO.getLang());
 
         String finalPath = storyService.createStorybook(finalizeStoryDTO) ;
 

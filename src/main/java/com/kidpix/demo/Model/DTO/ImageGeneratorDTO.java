@@ -13,6 +13,7 @@ public class ImageGeneratorDTO {
     private String themeName;
     private List<String> storyList ;
     private Integer want_anime;
+    private String lang ;
 
 
 

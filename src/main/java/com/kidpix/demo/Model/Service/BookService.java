@@ -111,7 +111,7 @@ public class BookService {
       dto.setCreationDate(bookEntity.getCreatedBook());
       dto.setThemeId(bookEntity.getCategory().getCatID());
       dto.setCoverPage(bookEntity.getCoverPage());
-      dto.setBookPath(bookEntity.getBookPath());
+      dto.setBookPath(bookEntity.getBookPath().replaceAll("/var/www/html" ,"http://206.81.27.175"));
       dto.setThemeName(bookEntity.getCategory().getCatName());
       dto.setThemeDescription(bookEntity.getCategory().getDescription());
       return dto ;
