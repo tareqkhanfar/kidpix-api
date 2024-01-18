@@ -26,7 +26,6 @@ public class PhysicalBookEntity {
     private String status;
 
 
-
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private UserEntity user ;
@@ -34,6 +33,10 @@ public class PhysicalBookEntity {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "book_id")
     private BookEntity book ;
+
+
+
+
 
 
 

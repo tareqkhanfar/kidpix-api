@@ -22,6 +22,10 @@ public class PhysicalBookService {
 
     @Autowired
     private UserService userService ;
+
+    @Autowired
+    private EmailService emailService ;
+
     public PhysicalBookEntity createPhysicalBook(PhysicalBookEntity entity) {
         entity.setStatus("Pending");
         entity.setRequestDate(new Date());
@@ -70,13 +74,16 @@ public class PhysicalBookService {
         PhysicalBookEntity bookEntity = this.physicalBookRepo.findById(bookId).get();
         if (status.trim().equalsIgnoreCase("Ordered")){
             bookEntity.setStatus("Pending");
+            emailService.NotifyStatusBook(bookEntity.getUser().getFirstName()+ " " + bookEntity.getUser().getLastName() , bookEntity.getUser().getEmail() ,"Pending" , bookEntity.getBook().getCategory().getCatName() ) ;
         }
         else if (status.trim().equalsIgnoreCase("pending")){
             bookEntity.setStatus("Shipped");
+            emailService.NotifyStatusBook(bookEntity.getUser().getFirstName()+ " " + bookEntity.getUser().getLastName() , bookEntity.getUser().getEmail() ,"Shipped" , bookEntity.getBook().getCategory().getCatName() ) ;
 
         }
         else if (status.trim().equalsIgnoreCase("shipped")){
             bookEntity.setStatus("Delivered");
+            emailService.NotifyStatusBook(bookEntity.getUser().getFirstName()+ " " + bookEntity.getUser().getLastName() , bookEntity.getUser().getEmail() ,"Delivered" , bookEntity.getBook().getCategory().getCatName() ) ;
 
         }
        return this.physicalBookRepo.save(bookEntity);

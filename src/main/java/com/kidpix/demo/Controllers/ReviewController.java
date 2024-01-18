@@ -1,6 +1,7 @@
 package com.kidpix.demo.Controllers;
 
 
+import com.kidpix.demo.Model.DTO.HighestLowestRatingDTO;
 import com.kidpix.demo.Model.DTO.ReviewsDTO;
 import com.kidpix.demo.Model.Entity.ReviewsEntity;
 import com.kidpix.demo.Model.Service.ReviewService;
@@ -30,6 +31,15 @@ public class ReviewController {
         catch (Exception exception ) {
            return ResponseEntity.internalServerError().body(exception.getMessage());
         }
+    }
+
+    @GetMapping("/getHighestRating")
+    public ResponseEntity<HighestLowestRatingDTO>getHighestRating() {
+        return ResponseEntity.ok(this.reviewService.getHighestRating());
+    }
+    @GetMapping("/getLowestRating")
+    public ResponseEntity<HighestLowestRatingDTO>getLowestRating() {
+        return ResponseEntity.ok(this.reviewService.getLowestRating());
     }
 
 

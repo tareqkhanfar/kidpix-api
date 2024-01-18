@@ -4,6 +4,7 @@ import com.kidpix.demo.Model.Entity.ReviewsEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface ReviewRepo extends JpaRepository<ReviewsEntity , Long> {
@@ -14,5 +15,11 @@ public interface ReviewRepo extends JpaRepository<ReviewsEntity , Long> {
 
     @Query("select  avg(r.rating) from  ReviewsEntity  r ")
     Optional<Double> findAverageOverAllWebsite();
+
+    @Query("SELECT r.themeName, AVG(r.rating) FROM ReviewsEntity r GROUP BY r.themeName")
+    List<Object[]> findAverageRatingsByTheme();
+
+
+
 
 }

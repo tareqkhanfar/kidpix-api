@@ -86,4 +86,24 @@ public class EmailService {
        }
        return false ;
     }
+
+    public void NotifyStatusBook(String userName, String to, String status, String themeName) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        String emailSubject = "Update on Your KidPix StoryBook Order";
+        String emailBody = String.format(
+                "Dear %s,\n\n" +
+                        "We wanted to let you know that the status of your StoryBook '%s' has been updated to: %s.\n\n" +
+                        "If you have any questions or need assistance, please feel free to contact us at help@kidpix.com.\n\n" +
+                        "Thank you for choosing KidPix!\n\n" +
+                        "Best regards,\n" +
+                        "The KidPix Team",
+                userName, themeName, status
+        );
+
+        message.setFrom("tareq@asd.ps"); // Replace with your sender email
+        message.setTo(to);
+        message.setSubject(emailSubject);
+        message.setText(emailBody);
+        emailSender.send(message);
+    }
 }
