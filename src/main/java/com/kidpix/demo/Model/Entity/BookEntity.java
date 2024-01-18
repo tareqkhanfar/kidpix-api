@@ -41,6 +41,13 @@ public class BookEntity  {
     @Column(name = "status")
     private String status ;
 
+
+
+    @Column(name = "cover_page")
+    private String coverPage ;
+
+
+
     @Column(name = "created_book")
     private Date createdBook;
 

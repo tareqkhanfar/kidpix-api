@@ -35,7 +35,7 @@ public class BookService {
     public BookEntity createBook(BookEntity bookEntity) {
         bookEntity.setStatus("Pending");
         bookEntity.setCreatedBook(new Date());
-      return bookRepository.save(bookEntity);
+      return this.bookRepository.save(bookEntity);
 
     }
 
@@ -110,7 +110,7 @@ public class BookService {
 
       dto.setCreationDate(bookEntity.getCreatedBook());
       dto.setThemeId(bookEntity.getCategory().getCatID());
-      dto.setCoverPage(bookEntity.getCategory().getThemeImagePath());
+      dto.setCoverPage(bookEntity.getCoverPage());
       dto.setBookPath(bookEntity.getBookPath());
       dto.setThemeName(bookEntity.getCategory().getCatName());
       dto.setThemeDescription(bookEntity.getCategory().getDescription());

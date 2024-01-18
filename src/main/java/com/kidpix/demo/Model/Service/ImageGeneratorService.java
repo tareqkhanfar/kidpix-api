@@ -63,7 +63,7 @@ public class ImageGeneratorService {
 
 
 
-    public Map<String , String> generateImage(ImageGeneratorDTO imageGeneratorDTO) {
+    public String generateImage(ImageGeneratorDTO imageGeneratorDTO) {
 
         String kidName = imageGeneratorDTO.getKidName();
         String imageInputPath = imageGeneratorDTO.getImageInputPath();
@@ -75,13 +75,14 @@ public class ImageGeneratorService {
         File outputDir__ = new File(outputDir);
 
         // List all files in the directory
-        Map<String , String > stringStringMap = new LinkedHashMap<>();
+
+        String s = "" ;
         File[] files = outputDir__.listFiles();
         if (files != null) {
             for (File file : files) {
                 if (file.isFile()) {
                     if (file.getName().contains("Swap_0.png")){
-                       stringStringMap.put("coverPageAfterSwap" , file.getAbsolutePath());
+                        s = file.getAbsolutePath().replaceAll("/var/www/html" , "") ;
                     }
                 }
             }
@@ -106,16 +107,17 @@ public class ImageGeneratorService {
 
         BookEntity bookEntity = this.bookService.findBookById(imageGeneratorDTO.getBookId());
         bookEntity.setBookPath(finalPath);
+        bookEntity.setCoverPage(s);
         this.bookService.createBook(bookEntity);
+
 
         System.out.println("[DEGUB.IMAGEGEN] fileNames : " + outputDir);
         UserEntity userEntity = this.bookService.findBookById(imageGeneratorDTO.getBookId()).getUser() ;
         this.emailService.sendBook(userEntity.getFirstName() +" " + userEntity.getLastName() ,userEntity.getEmail() , finalPath );
 
 
-stringStringMap.put("finalPath" , finalPath) ;
 
-        return stringStringMap ;
+        return finalPath ;
 
     }
 
