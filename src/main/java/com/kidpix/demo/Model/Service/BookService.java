@@ -93,7 +93,7 @@ public class BookService {
 
        for (BookEntity entity : bookEntities) {
            BookCatDTO dto = new BookCatDTO()  ;
-           dto.setBookPath(entity.getBookPath());
+           dto.setBookPath(entity.getBookPath().replaceAll("/var/www/html" , "http://206.81.27.175"));
            dto.setCreatationDate(entity.getCreatedBook());
            dto.setCatId(entity.getCategory().getCatID());
            dto.setBookId(entity.getBook_id());
