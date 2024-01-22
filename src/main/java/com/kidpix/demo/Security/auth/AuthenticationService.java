@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -40,6 +42,7 @@ public class AuthenticationService {
         var token = jwtService.generateToken(user);
         return new AuthenticationResponse().builder().
                 Token(token)
+                .status_account(user.getStatus_account())
                 .build();
     }
 
@@ -55,6 +58,39 @@ public class AuthenticationService {
                 .status_account(status_account)
                 .build();
     }
+
+    public AuthenticationAdminResponse authenticateAdminRequest(AuthenticationRequest request) {
+        try {
+            // Authenticate the user
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
+            );
+
+            // Retrieve user details
+            var userEntity = userRepository.findByEmail_(request.getEmail()).orElseThrow(() ->
+                    new UsernameNotFoundException("User not found")
+            );
+
+            // Check if the user is an admin
+            if (userEntity.getIsAdmin() == 0) {
+                throw new IllegalArgumentException("User is not an admin");
+            }
+
+            // Generate JWT token
+            var token = jwtService.generateToken(userEntity);
+            Byte isAdmin = userEntity.getIsAdmin();
+
+            // Return response
+            return new AuthenticationAdminResponse().builder()
+                    .Token(token)
+                    .isAdmin(isAdmin)
+                    .build();
+
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Invalid username or password", e);
+        }
+    }
+
 
 
 }

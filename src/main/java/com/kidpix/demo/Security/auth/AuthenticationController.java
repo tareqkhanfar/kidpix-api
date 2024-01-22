@@ -1,6 +1,7 @@
 package com.kidpix.demo.Security.auth;
 
 
+import com.kidpix.demo.Model.DTO.UserDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,6 +29,14 @@ private final AuthenticationService authenticationService;
 
 
     }
+
+    @PostMapping("/authenticate/adminLogin")
+    public ResponseEntity<AuthenticationAdminResponse> authenticateAdminRequest(@RequestBody AuthenticationRequest Request) {
+        return ResponseEntity.ok(authenticationService.authenticateAdminRequest(Request));
+
+
+    }
+
 
 
 }
