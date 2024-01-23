@@ -50,12 +50,16 @@ public class SceneController {
                 .collect(Collectors.toList());
         return ResponseEntity.ok(dtoList);
     }
-    @GetMapping("/category/{category}/{NAME}")
-    public ResponseEntity<List<SceneDTO>> getScenesByCategory(@PathVariable("category") Long category , @PathVariable("NAME") String Name) {
+    @GetMapping("/category/{category}/{NAME}/{LANG}")
+    public ResponseEntity<List<SceneDTO>> getScenesByCategory(@PathVariable("category") Long category , @PathVariable("NAME") String Name , @PathVariable("LANG") String lang) {
         List<SceneEntity> scenes = sceneService.getScenesByCategory(category);
         for (SceneEntity  sceneEntity : scenes) {
-           sceneEntity.setDefualtStoryText(sceneEntity.getDefualtStoryText().replaceAll("\\[NAME\\]", Name) );
-
+            if (lang.equalsIgnoreCase("ar")){
+                sceneEntity.setDefualtStoryText(sceneEntity.getStory_txt_ar().replaceAll("\\[NAME\\]", Name) );
+            }
+            else {
+                sceneEntity.setDefualtStoryText(sceneEntity.getDefualtStoryText().replaceAll("\\[NAME\\]", Name));
+            }
         }
         List<SceneDTO> dtoList = scenes.stream()
                 .map(SceneController::convertEntityToDTO)
@@ -112,7 +116,6 @@ public ResponseEntity<StoryTextDTO> storyTextToBook (@RequestBody StoryTextDTO s
         sceneDTO.setCategoryId(sceneEntity.getCategory().getCatID());
         sceneDTO.setPageNumber(sceneEntity.getPageNumber());
         sceneDTO.setDefualtStoryText(sceneEntity.getDefualtStoryText());
-        sceneDTO.setStory_text_ar(sceneEntity.getStory_txt_ar());
         return sceneDTO;
     }
 
@@ -124,7 +127,7 @@ public ResponseEntity<StoryTextDTO> storyTextToBook (@RequestBody StoryTextDTO s
         sceneEntity.setCategory(categoryRepo.findById(sceneDTO.getCategoryId()).get());
         sceneEntity.setPageNumber(sceneDTO.getPageNumber());
         sceneEntity.setDefualtStoryText(sceneDTO.getDefualtStoryText());
-        sceneEntity.setStory_txt_ar(sceneDTO.getStory_text_ar());
+        sceneEntity.setStory_txt_ar(sceneDTO.getDefualtStoryText());
         return sceneEntity;
     }
 

@@ -35,7 +35,9 @@ public class PhysicalBookEntity {
     private BookEntity book ;
 
 
-
+    @ManyToOne
+    @JoinColumn(name = "address_id")
+    private AddressEntity physical_book ;
 
 
 

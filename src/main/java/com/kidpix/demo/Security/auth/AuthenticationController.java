@@ -2,12 +2,11 @@ package com.kidpix.demo.Security.auth;
 
 
 import com.kidpix.demo.Model.DTO.UserDTO;
+import com.kidpix.demo.Security.config.JwtService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -15,6 +14,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthenticationController {
 
 private final AuthenticationService authenticationService;
+
+
+@Autowired
+private JwtService jwtService ;
     @PostMapping("/register")
     public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterRequest registerRequest) {
 
@@ -33,9 +36,9 @@ private final AuthenticationService authenticationService;
     @PostMapping("/authenticate/adminLogin")
     public ResponseEntity<AuthenticationAdminResponse> authenticateAdminRequest(@RequestBody AuthenticationRequest Request) {
         return ResponseEntity.ok(authenticationService.authenticateAdminRequest(Request));
-
-
     }
+
+
 
 
 

@@ -68,4 +68,7 @@ public class BookEntity  {
     @OneToMany(mappedBy = "book")
     private List<PhysicalBookEntity> physicalBookEntities ;
 
+
+
+
 }

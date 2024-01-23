@@ -53,6 +53,10 @@ public class UserEntity implements UserDetails {
     @OneToMany(mappedBy = "user")
     private List<PhysicalBookEntity> physicalBookEntities ;
 
+
+    @OneToMany(mappedBy = "user")
+    private List<AddressEntity>addressEntities ;
+
     public UserEntity() {
 
     }

@@ -10,7 +10,6 @@ public class SceneDTO {
     private  Byte pageNumber ;
     private Long categoryId;
     private String defualtStoryText ;
-private String story_text_ar ;
 
 
 // Constructor, toString(), etc. (optional)

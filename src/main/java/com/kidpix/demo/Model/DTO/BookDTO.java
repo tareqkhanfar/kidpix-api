@@ -12,11 +12,10 @@ public class BookDTO {
     private String kidPhoto;
     private String gender;
     private String notes;
-    private String bookPath;
+    private String bookPath="na";
     private String userEmail ;
     private Integer age ;
     private String fileExtension ;
     private String status ;
-
    private Date createdBook ;
 }

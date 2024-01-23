@@ -69,8 +69,8 @@ public class ImageGeneratorService {
         String imageInputPath = imageGeneratorDTO.getImageInputPath();
         String themeName = imageGeneratorDTO.getThemeName();
 
-      //String outputDir = runFaceSwapScript(imageInputPath, themeName, kidName);
-   String outputDir = "/var/www/html/assets/bundles/zoo/" ;
+     // String outputDir = runFaceSwapScript(imageInputPath, themeName, kidName);
+    String outputDir = "/var/www/html/assets/bundles/school/" ;
 
         File outputDir__ = new File(outputDir);
 
@@ -114,8 +114,14 @@ public class ImageGeneratorService {
 
         System.out.println("[DEGUB.IMAGEGEN] fileNames : " + outputDir);
         UserEntity userEntity = this.bookService.findBookById(imageGeneratorDTO.getBookId()).getUser() ;
-        this.emailService.sendBook(userEntity.getFirstName() +" " + userEntity.getLastName() ,userEntity.getEmail() , finalPath );
 
+
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        this.emailService.sendBook(userEntity.getFirstName() +" " + userEntity.getLastName() ,userEntity.getEmail() , finalPath );
 
 
         return finalPath ;
