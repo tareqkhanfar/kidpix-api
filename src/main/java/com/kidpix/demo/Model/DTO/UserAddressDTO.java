@@ -6,6 +6,8 @@ import lombok.Data;
 @Data
 public class UserAddressDTO {
 
+
+    private String email ;
     private Long addressId  ;
     private String workAddress ;
     private String homeAddress ;

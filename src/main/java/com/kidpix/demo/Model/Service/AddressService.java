@@ -20,6 +20,10 @@ public class AddressService {
       return   this.userService.getUserInfoByEmail(email).getAddressEntities() ;
     }
 
+    public AddressEntity getAddressById (Long addressId ) {
+        return this.addressRepo.findById(addressId).get() ;
+    }
+
     public AddressEntity createAddress(AddressEntity addressEntity) {
       return  this.addressRepo.save(addressEntity) ;
     }

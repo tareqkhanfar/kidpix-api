@@ -21,6 +21,9 @@ public class AddressController {
     @Autowired
     private AddressService addressService ;
 
+    @Autowired
+    private UserService userService ;
+
     @GetMapping("/getAllAddressByUserEmail/{email}")
     public ResponseEntity<List<UserAddressDTO>>getAllAddressByUserEmail(@PathVariable("email") String email){
        List<UserAddressDTO>  userAddressDTOS =  this.addressService.getAllAddressByUserEmail(email ) .stream().map(this::convertEntityToDTO).collect(Collectors.toList());
@@ -41,11 +44,13 @@ public class AddressController {
         dto.setCountry(addressEntity.getCountry());
         dto.setZipCode(addressEntity.getZipCode());
         dto.setPhone(addressEntity.getPhone());
+        dto.setEmail(addressEntity.getUser().getEmail());
         return dto;
     }
 
     public AddressEntity convertDTOToEntity(UserAddressDTO dto) {
         return AddressEntity.builder()
+                .user(this.userService.getUserInfoByEmail(dto.getEmail()))
                 .address_id(dto.getAddressId())
                 .work_address(dto.getWorkAddress())
                 .home_address(dto.getHomeAddress())

@@ -2,9 +2,11 @@ package com.kidpix.demo.Controllers;
 
 
 import com.kidpix.demo.Model.DTO.BookCatDTO;
+import com.kidpix.demo.Model.DTO.OrderDTO;
 import com.kidpix.demo.Model.DTO.PhysicalBookDto;
 import com.kidpix.demo.Model.DTO.PhysicalBookWithUserBook;
 import com.kidpix.demo.Model.Entity.PhysicalBookEntity;
+import com.kidpix.demo.Model.Service.AddressService;
 import com.kidpix.demo.Model.Service.BookService;
 import com.kidpix.demo.Model.Service.PhysicalBookService;
 import com.kidpix.demo.Model.Service.UserService;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RequestMapping("/api/physicalbook")
 @RestController
@@ -29,6 +32,9 @@ public class PhysicalBookController {
 
     @Autowired
     private PhysicalBookService physicalBookService ;
+
+    @Autowired
+    private AddressService addressService ;
 
 
 
@@ -49,6 +55,14 @@ public class PhysicalBookController {
        map.put("status" , physicalBookEntity.getStatus());
        return  ResponseEntity.ok(map);
     }
+
+    /*
+    @GetMapping("/getAllOrdersByUserEmail/{email}")
+    public ResponseEntity<OrderDTO> getAllOrderByUserEmail(@PathVariable("email") String email){
+      return ResponseEntity.ok(this.userService.getUserInfoByEmail(email).getPhysicalBookEntities().stream().collect(Collectors.toList())) ;
+    }
+
+     */
 
     @GetMapping("/getPhysicalBooks")
     public List<PhysicalBookWithUserBook> physicalBookWithUserBooks() {
@@ -82,23 +96,21 @@ public class PhysicalBookController {
     }
     private PhysicalBookDto convertToDto(PhysicalBookEntity entity) {
         PhysicalBookDto dto = new PhysicalBookDto();
-        dto.setPhysicalBookId(entity.getPhysicalBookId());
+      //  dto.setPhysicalBookId(entity.getPhysicalBookId());
         dto.setNumCopies(entity.getNumCopies());
-        dto.setRequestDate(entity.getRequestDate());
-        dto.setStatus(entity.getStatus());
-        dto.setUserId(entity.getUser().getId()); // Assuming getUserId() exists
+      ///  dto.setRequestDate(entity.getRequestDate());
+     //   dto.setStatus(entity.getStatus());
+     //   dto.setUserId(entity.getUser().getId()); // Assuming getUserId() exists
         dto.setBookId(entity.getBook().getBook_id()); // Assuming getBookId() exists
         return dto;
     }
 
     private PhysicalBookEntity convertToEntity(PhysicalBookDto dto) {
         PhysicalBookEntity entity = new PhysicalBookEntity();
-        entity.setPhysicalBookId(dto.getPhysicalBookId());
         entity.setNumCopies(dto.getNumCopies());
-        entity.setRequestDate(dto.getRequestDate());
-        entity.setStatus(dto.getStatus());
         entity.setBook(this.bookService.getBookById(dto.getBookId()));
-        entity.setUser(this.userService.getUserById(dto.getUserId()));
+        entity.setUser(this.bookService.getBookById(dto.getBookId()).getUser());
+        entity.setAddressEntity(this.addressService.getAddressById(dto.getAddressId()));
         return entity;
     }
 

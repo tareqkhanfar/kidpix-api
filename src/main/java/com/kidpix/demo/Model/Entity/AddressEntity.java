@@ -45,7 +45,7 @@ public class AddressEntity {
     @Column(name = "phone_number")
     private String phone ;
 
-    @OneToMany(mappedBy = "physical_book")
+    @OneToMany(mappedBy = "addressEntity")
     private List<PhysicalBookEntity> orderEntityList ;
 
 
