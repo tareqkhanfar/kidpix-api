@@ -1,10 +1,7 @@
 package com.kidpix.demo.Controllers;
 
 
-import com.kidpix.demo.Model.DTO.BookCatDTO;
-import com.kidpix.demo.Model.DTO.OrderDTO;
-import com.kidpix.demo.Model.DTO.PhysicalBookDto;
-import com.kidpix.demo.Model.DTO.PhysicalBookWithUserBook;
+import com.kidpix.demo.Model.DTO.*;
 import com.kidpix.demo.Model.Entity.PhysicalBookEntity;
 import com.kidpix.demo.Model.Service.AddressService;
 import com.kidpix.demo.Model.Service.BookService;
@@ -91,8 +88,13 @@ public class PhysicalBookController {
         return ResponseEntity.ok( this.physicalBookService.findBookByStatus(status)) ;
     }
     @GetMapping("/getAllBooksForUser/{email}")
-    public ResponseEntity<List<BookCatDTO>>getAllBooksForUser(@PathVariable("email") String email) {
+    public ResponseEntity<List<PhysicalBookForUser>>getAllBooksForUser(@PathVariable("email") String email) {
         return ResponseEntity.ok(this.physicalBookService.getAllBooksForUser(email));
+    }
+
+    @GetMapping("/cancel_book/{book_id}")
+    public ResponseEntity<String> cancelPage(@PathVariable("book_id") Long bookId){
+        return ResponseEntity.ok(this.physicalBookService.cancelBook(bookId));
     }
     private PhysicalBookDto convertToDto(PhysicalBookEntity entity) {
         PhysicalBookDto dto = new PhysicalBookDto();

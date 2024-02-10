@@ -73,7 +73,10 @@ public class BookController {
 
 return outputfile.getAbsolutePath();
     }
-
+    @GetMapping("/cancel_book/{book_id}")
+    public ResponseEntity<String> cancelPage(@PathVariable("book_id") Long bookId){
+        return ResponseEntity.ok(this.bookService.cancelBook(bookId));
+    }
 
     @GetMapping("/getAllBooksForUser/{email}")
     public ResponseEntity<List<BookCatDTO>>getAllBooksForUser(@PathVariable("email") String email) {

@@ -116,4 +116,9 @@ public class BookService {
       dto.setThemeDescription(bookEntity.getCategory().getDescription());
       return dto ;
     }
+
+    public String cancelBook(Long bookId) {
+        this.bookRepository.deleteById(bookId);
+        return "deleted Successfully";
+    }
 }

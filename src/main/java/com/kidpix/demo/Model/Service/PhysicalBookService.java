@@ -2,6 +2,7 @@ package com.kidpix.demo.Model.Service;
 
 
 import com.kidpix.demo.Model.DTO.BookCatDTO;
+import com.kidpix.demo.Model.DTO.PhysicalBookForUser;
 import com.kidpix.demo.Model.DTO.PhysicalBookWithUserBook;
 import com.kidpix.demo.Model.Entity.BookEntity;
 import com.kidpix.demo.Model.Entity.PhysicalBookEntity;
@@ -89,21 +90,30 @@ public class PhysicalBookService {
        return this.physicalBookRepo.save(bookEntity);
     }
 
-    public List<BookCatDTO> getAllBooksForUser(String email) {
+    public List<PhysicalBookForUser> getAllBooksForUser(String email) {
         Long id =  this.userService.getUserInfoByEmail(email).getId();
         List<PhysicalBookEntity> bookEntities =  this.physicalBookRepo.getAllBooksForUser(id) ;
-        List<BookCatDTO>bookCatDTOS = new LinkedList<>( );
+        List<PhysicalBookForUser>bookCatDTOS = new LinkedList<>( );
 
         for (PhysicalBookEntity entity : bookEntities) {
-            BookCatDTO dto = new BookCatDTO()  ;
+            PhysicalBookForUser dto = new PhysicalBookForUser()  ;
             dto.setBookPath(entity.getBook().getBookPath().replaceAll("/var/www/html" , "http://kid-pix.com"));
             dto.setCreatationDate(entity.getRequestDate());
             dto.setCatId(entity.getBook().getCategory().getCatID());
             dto.setBookId(entity.getPhysicalBookId());
             dto.setCatName(entity.getBook().getCategory().getCatName());
             dto.setThemePath(entity.getBook().getCategory().getThemeImagePath());
+            dto.setRequestedDate(entity.getRequestDate());
+            dto.setStatus(entity.getStatus());
+            dto.setNumCopies(entity.getNumCopies());
             bookCatDTOS.add(dto);
         }
         return bookCatDTOS;
+    }
+
+    public String cancelBook(Long bookId) {
+        this.physicalBookRepo.deleteById(bookId);
+
+        return "Cancelled Successfully " ;
     }
 }
