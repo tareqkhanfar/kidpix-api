@@ -96,7 +96,7 @@ public class PhysicalBookService {
 
         for (PhysicalBookEntity entity : bookEntities) {
             BookCatDTO dto = new BookCatDTO()  ;
-            dto.setBookPath(entity.getBook().getBookPath());
+            dto.setBookPath(entity.getBook().getBookPath().replaceAll("/var/www/html" , "http://kid-pix.com"));
             dto.setCreatationDate(entity.getRequestDate());
             dto.setCatId(entity.getBook().getCategory().getCatID());
             dto.setBookId(entity.getPhysicalBookId());

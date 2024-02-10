@@ -29,7 +29,7 @@ public class EmailService {
                 "Security Code: ["+code+"]\n" +
                 "\n" +
                 "This code is part of our security process to ensure your account's safety and integrity. Please enter this code in the designated area on our website to proceed.";
-        message.setFrom("tareq@asd.ps");
+        message.setFrom("kidpix@kid-pix.com");
         message.setTo(to);
         message.setSubject("Your Security Code");
         message.setText(MESSAGE);
@@ -38,7 +38,7 @@ public class EmailService {
     }
 
     public void sendBook(String userName , String to , String BookPath) {
-        BookPath =BookPath.replaceAll("/var/www/html" , "http://206.81.27.175") ;
+        BookPath =BookPath.replaceAll("/var/www/html" , "http://kid-pix.com") ;
 
         System.out.println("to : " + to);
         SimpleMailMessage message = new SimpleMailMessage();
@@ -63,7 +63,7 @@ public class EmailService {
                 recipientName, bookLink, yourName, yourContactInfo
         );
 
-        message.setFrom("tareq@asd.ps");
+        message.setFrom("kidpix@kid-pix.com");
         message.setTo(to);
         message.setSubject("Your KidPix StoryBook is Ready!");
         message.setText(emailMessage);
@@ -100,7 +100,7 @@ public class EmailService {
                 userName, themeName, status
         );
 
-        message.setFrom("tareq@asd.ps"); // Replace with your sender email
+        message.setFrom("kidpix@kid-pix.com"); // Replace with your sender email
         message.setTo(to);
         message.setSubject(emailSubject);
         message.setText(emailBody);

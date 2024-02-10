@@ -14,6 +14,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.stream.Collectors;
 @RestController
@@ -52,6 +54,8 @@ public class SceneController {
     }
     @GetMapping("/category/{category}/{NAME}/{LANG}")
     public ResponseEntity<List<SceneDTO>> getScenesByCategory(@PathVariable("category") Long category , @PathVariable("NAME") String Name , @PathVariable("LANG") String lang) {
+
+        Name =  URLDecoder.decode(Name, StandardCharsets.UTF_8);
         List<SceneEntity> scenes = sceneService.getScenesByCategory(category);
         for (SceneEntity  sceneEntity : scenes) {
             if (lang.equalsIgnoreCase("ar")){

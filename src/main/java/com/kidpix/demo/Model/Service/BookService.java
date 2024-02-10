@@ -93,7 +93,7 @@ public class BookService {
 
        for (BookEntity entity : bookEntities) {
            BookCatDTO dto = new BookCatDTO()  ;
-           dto.setBookPath(entity.getBookPath().replaceAll("/var/www/html" , "http://206.81.27.175"));
+           dto.setBookPath(entity.getBookPath().replaceAll("/var/www/html" , "http://kid-pix.com"));
            dto.setCreatationDate(entity.getCreatedBook());
            dto.setCatId(entity.getCategory().getCatID());
            dto.setBookId(entity.getBook_id());
@@ -111,7 +111,7 @@ public class BookService {
       dto.setCreationDate(bookEntity.getCreatedBook());
       dto.setThemeId(bookEntity.getCategory().getCatID());
       dto.setCoverPage(bookEntity.getCoverPage());
-      dto.setBookPath(bookEntity.getBookPath().replaceAll("/var/www/html" ,"http://206.81.27.175"));
+      dto.setBookPath(bookEntity.getBookPath().replaceAll("/var/www/html" ,"http://kid-pix.com"));
       dto.setThemeName(bookEntity.getCategory().getCatName());
       dto.setThemeDescription(bookEntity.getCategory().getDescription());
       return dto ;

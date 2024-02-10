@@ -12,7 +12,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -63,14 +65,16 @@ public class ImageGeneratorService {
 
 
 
-    public String generateImage(ImageGeneratorDTO imageGeneratorDTO) {
+    public String generateImage(ImageGeneratorDTO imageGeneratorDTO) throws IOException {
+
+
 
         String kidName = imageGeneratorDTO.getKidName();
         String imageInputPath = imageGeneratorDTO.getImageInputPath();
         String themeName = imageGeneratorDTO.getThemeName();
 
-     // String outputDir = runFaceSwapScript(imageInputPath, themeName, kidName);
-    String outputDir = "/var/www/html/assets/bundles/school/" ;
+      String outputDir = runFaceSwapScript(imageInputPath, themeName, kidName);
+    //String outputDir = "/var/www/html/assets/bundles/school/" ;
 
         File outputDir__ = new File(outputDir);
 
@@ -82,7 +86,10 @@ public class ImageGeneratorService {
             for (File file : files) {
                 if (file.isFile()) {
                     if (file.getName().contains("Swap_0.png")){
-                        s = file.getAbsolutePath().replaceAll("/var/www/html" , "") ;
+                        String targetPath = "/var/www/html/assets/cover_books/" + file.getName();
+                        Files.copy(Paths.get(file.getAbsolutePath()), Paths.get(targetPath), StandardCopyOption.REPLACE_EXISTING);
+                        System.out.println("File moved successfully.");
+                        s = "/assets/cover_books/"+file.getName() ;
                     }
                 }
             }
@@ -117,7 +124,7 @@ public class ImageGeneratorService {
 
 
         try {
-            Thread.sleep(10000);
+            Thread.sleep(20000);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }

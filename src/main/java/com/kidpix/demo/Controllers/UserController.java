@@ -95,6 +95,7 @@ catch (Exception exception ) {
             return ResponseEntity.ok(new ApiResponse("Code sent Successfully, Check your Email", true));
         }
         catch (Exception e ) {
+            e.printStackTrace();
             return ResponseEntity.internalServerError().body(new ApiResponse(e.getMessage(), false));
         }
 

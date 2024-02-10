@@ -19,16 +19,27 @@ private final AuthenticationService authenticationService;
 @Autowired
 private JwtService jwtService ;
     @PostMapping("/register")
-    public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterRequest registerRequest) {
+    public ResponseEntity<?> register(@RequestBody RegisterRequest registerRequest) {
 
         System.out.println(registerRequest.getEmail());
-         return ResponseEntity.ok(authenticationService.register(registerRequest));
+        try {
+            return ResponseEntity.ok(authenticationService.register(registerRequest));
+        }
+        catch (Exception e ){
+            return ResponseEntity.internalServerError().body(e.getMessage());
+        }
 
     }
 
     @PostMapping("/authenticate")
-    public ResponseEntity<AuthenticationResponse> authenticateRequest(@RequestBody AuthenticationRequest Request) {
-        return ResponseEntity.ok(authenticationService.authenticateRequest(Request));
+    public ResponseEntity<?> authenticateRequest(@RequestBody AuthenticationRequest Request) {
+        try {
+            return ResponseEntity.ok(authenticationService.authenticateRequest(Request));
+
+        }
+        catch (Exception exception ) {
+            return ResponseEntity.internalServerError().body(exception.getMessage());
+        }
 
 
     }

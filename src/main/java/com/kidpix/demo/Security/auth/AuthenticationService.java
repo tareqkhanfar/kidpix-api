@@ -29,6 +29,12 @@ public class AuthenticationService {
     @Autowired
     private UserService userService ;
     public AuthenticationResponse register(RegisterRequest registerRequest) {
+        UserEntity userEntity = userService.getUserInfoByEmail(registerRequest.getEmail().trim());
+        if (userEntity != null) {
+            throw  new IllegalArgumentException("This  Account already exist ! ") ;
+        }
+        Byte x = 0 ;
+        registerRequest.setStatus_account(x);
         var user = UserEntity.builder()
                 .userName(registerRequest.getUserName())
                 .email(registerRequest.getEmail())
@@ -50,6 +56,11 @@ public class AuthenticationService {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getEmail() ,request.getPassword())
         );
+
+         userRepository.findByEmail_(request.getEmail()).orElseThrow(() ->
+                new UsernameNotFoundException("User not found")
+        );
+
         var user = userRepository.findByEmail_(request.getEmail()).orElseThrow();
         var token = jwtService.generateToken(user);
         Byte status_account = this.userService.getUserInfoByEmail(request.getEmail()).getStatus_account();

@@ -6,6 +6,7 @@ import com.kidpix.demo.Model.Entity.BookEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.awt.*;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
@@ -103,7 +104,12 @@ public class FinalizeStoryService {
             builder.inheritIO();
             Map<String, String> env = builder.environment();
             env.put("FONTCONFIG_PATH", "/usr/local/share/fonts/");
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            String[] fontFamilies = ge.getAvailableFontFamilyNames();
 
+            for (String fontName : fontFamilies) {
+                System.out.println("FONST NAME : "+fontName);
+            }
             builder.redirectErrorStream(true);
             Process p = builder.start();
             BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));

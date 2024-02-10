@@ -67,7 +67,8 @@ public class UserService {
     public UserEntity getUserInfoByEmail(String email) {
         UserEntity userEntity = this.userRepo.findByEmail(email);
         if (userEntity == null) {
-            throw new IllegalArgumentException("User not found with this email: " + email);
+          //  throw new IllegalArgumentException("User not found with this email: " + email);
+            return null ;
         }
         return userEntity;
     }
