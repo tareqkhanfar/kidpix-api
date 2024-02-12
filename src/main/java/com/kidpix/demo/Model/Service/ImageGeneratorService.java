@@ -73,8 +73,8 @@ public class ImageGeneratorService {
         String imageInputPath = imageGeneratorDTO.getImageInputPath();
         String themeName = imageGeneratorDTO.getThemeName();
 
-      String outputDir = runFaceSwapScript(imageInputPath, themeName, kidName);
-    //String outputDir = "/var/www/html/assets/bundles/school/" ;
+     // String outputDir = runFaceSwapScript(imageInputPath, themeName, kidName);
+  String outputDir = "/var/www/html/assets/bundles/superman/" ;
 
         File outputDir__ = new File(outputDir);
 

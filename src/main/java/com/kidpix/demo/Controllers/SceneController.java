@@ -59,7 +59,10 @@ public class SceneController {
         List<SceneEntity> scenes = sceneService.getScenesByCategory(category);
         for (SceneEntity  sceneEntity : scenes) {
             if (lang.equalsIgnoreCase("ar")){
-                sceneEntity.setDefualtStoryText(sceneEntity.getStory_txt_ar().replaceAll("\\[NAME\\]", Name) );
+                sceneEntity.setDefualtStoryText(sceneEntity.getStory_txt_ar().replaceAll("\\[NAME\\]", Name));
+                sceneEntity.setDefualtStoryText(sceneEntity.getStory_txt_ar().replaceAll("\\[الاسم\\]", Name));
+
+
             }
             else {
                 sceneEntity.setDefualtStoryText(sceneEntity.getDefualtStoryText().replaceAll("\\[NAME\\]", Name));
