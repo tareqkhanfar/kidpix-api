@@ -112,7 +112,7 @@ public class PhysicalBookService {
     }
 
     public String cancelBook(Long bookId) {
-        this.physicalBookRepo.deleteById(bookId);
+        this.physicalBookRepo.delete(this.physicalBookRepo.findById(bookId).get());
 
         return "Cancelled Successfully " ;
     }

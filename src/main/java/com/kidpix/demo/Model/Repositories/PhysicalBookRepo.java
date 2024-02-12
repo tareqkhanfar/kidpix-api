@@ -27,4 +27,7 @@ public interface PhysicalBookRepo extends JpaRepository<PhysicalBookEntity , Lon
 
     @Query("SELECT b from PhysicalBookEntity b where b.user.id = :userId")
     List<PhysicalBookEntity> getAllBooksForUser( Long userId);
+
+    @Query("delete from PhysicalBookEntity  p where  p.PhysicalBookId =:bookId")
+    void deletePhysicalBook (Long bookId);
 }

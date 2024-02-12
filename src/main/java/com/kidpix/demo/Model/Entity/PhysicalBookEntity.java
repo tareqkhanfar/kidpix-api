@@ -35,7 +35,7 @@ public class PhysicalBookEntity {
     private BookEntity book ;
 
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id")
     private AddressEntity addressEntity ;
 
