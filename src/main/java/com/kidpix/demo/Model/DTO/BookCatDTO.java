@@ -13,4 +13,6 @@ public class BookCatDTO {
     private Date creatationDate ;
     private String catName ;
     private String themePath ;
+    private String kidName ;
+
 }

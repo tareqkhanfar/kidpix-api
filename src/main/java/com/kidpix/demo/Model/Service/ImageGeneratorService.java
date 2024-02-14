@@ -73,8 +73,17 @@ public class ImageGeneratorService {
         String imageInputPath = imageGeneratorDTO.getImageInputPath();
         String themeName = imageGeneratorDTO.getThemeName();
 
-     // String outputDir = runFaceSwapScript(imageInputPath, themeName, kidName);
-  String outputDir = "/var/www/html/assets/bundles/superman/" ;
+        UserEntity userEntity = this.bookService.findBookById(imageGeneratorDTO.getBookId()).getUser() ;
+
+        //String outputDir = "/var/www/html/assets/bundles/zoo/" ;
+
+       String outputDir = runFaceSwapScript(imageInputPath, themeName, kidName);
+
+        if(outputDir.contains("error")){
+            this.emailService.sendError(userEntity.getFirstName() , userEntity.getLastName() , userEntity.getEmail()  ,kidName) ;
+            return outputDir ;
+        }
+
 
         File outputDir__ = new File(outputDir);
 
@@ -120,7 +129,6 @@ public class ImageGeneratorService {
 
 
         System.out.println("[DEGUB.IMAGEGEN] fileNames : " + outputDir);
-        UserEntity userEntity = this.bookService.findBookById(imageGeneratorDTO.getBookId()).getUser() ;
 
 
         try {
@@ -156,16 +164,20 @@ public class ImageGeneratorService {
             }
         }
 
-        executeFaceSwapScript(imageInputPath, themeName, faceSwapOutputDir + File.separator + outputFilename);
+        int exitCode = executeFaceSwapScript(imageInputPath, themeName, faceSwapOutputDir + File.separator + outputFilename);
+
+        if (exitCode == 69) {
+            return "error: Face Not Found.";
+        }
 
         System.out.println("[DEGUB.IMAGEGEN.FACESWAP] finished executing script ?? ");
-         System.out.println("Output Dir From FaceSwap : " +faceSwapOutputDir + File.separator + outputFilename );
+        System.out.println("Output Dir From FaceSwap : " +faceSwapOutputDir + File.separator + outputFilename );
         return faceSwapOutputDir + File.separator + outputFilename;
 
 
     }
 
-    private void executeFaceSwapScript(String imageInputPath, String themeName, String outputDir) {
+    private int executeFaceSwapScript(String imageInputPath, String themeName, String outputDir) {
 
         System.out.println("[DEGUB.FACESWAP] imageInputPath : " + imageInputPath);
         System.out.println("[DEGUB.FACESWAP] themeName : " + themeName);
@@ -186,7 +198,7 @@ public class ImageGeneratorService {
         };
 
         ProcessBuilder processBuilder = new ProcessBuilder(command);
-         processBuilder.inheritIO();
+        processBuilder.inheritIO();
 
 
         try {
@@ -204,12 +216,12 @@ public class ImageGeneratorService {
 
             System.out.println("[DEGUB.FACESWAP] Exited with code " + exitCode);
 
-
-
+            return exitCode;
 
         } catch (IOException | InterruptedException e) {
             System.out.println("[DEGUB.FACESWAP] error executing script : " + e.getMessage());
         }
+        return 0 ;
 
     }
 
@@ -231,7 +243,7 @@ public class ImageGeneratorService {
         System.out.println("test 2 ");
 
 
-      System.out.println("OutputDir  from Anime GAN : " +animeGanOutputDir + File.separator +outputFilename );
+        System.out.println("OutputDir  from Anime GAN : " +animeGanOutputDir + File.separator +outputFilename );
 
         return animeGanOutputDir + File.separator +outputFilename;
 

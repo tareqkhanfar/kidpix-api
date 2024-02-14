@@ -98,7 +98,8 @@ public class BookService {
            dto.setCatId(entity.getCategory().getCatID());
            dto.setBookId(entity.getBook_id());
            dto.setCatName(entity.getCategory().getCatName());
-           dto.setThemePath(entity.getCategory().getThemeImagePath());
+           dto.setThemePath(entity.getCoverPage());
+           dto.setKidName(entity.getKidName());
            bookCatDTOS.add(dto);
         }
         return bookCatDTOS;

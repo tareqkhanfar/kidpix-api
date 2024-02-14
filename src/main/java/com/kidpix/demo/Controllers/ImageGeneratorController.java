@@ -28,15 +28,13 @@ public class ImageGeneratorController {
         imageGeneratorDTO.setKidName( URLDecoder.decode(imageGeneratorDTO.getKidName(), StandardCharsets.UTF_8));
 
         System.out.println("List Story : " + imageGeneratorDTO.getStoryList());
-  String s =  this.imageGeneratorService.generateImage(imageGeneratorDTO).replaceAll("/var/www/html" ,"http://kid-pix.com" );
+        String s =  this.imageGeneratorService.generateImage(imageGeneratorDTO).replaceAll("/var/www/html" ,"http://kid-pix.com" );
+
+        if (s.contains("error")){
+            return ResponseEntity.status(406).body(s);
+        }
 
         return  ResponseEntity.ok(s);
     }
-
-
-
-
-
-
 
 }

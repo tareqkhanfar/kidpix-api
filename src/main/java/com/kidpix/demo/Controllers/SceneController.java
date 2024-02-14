@@ -61,8 +61,6 @@ public class SceneController {
             if (lang.equalsIgnoreCase("ar")){
                 sceneEntity.setDefualtStoryText(sceneEntity.getStory_txt_ar().replaceAll("\\[NAME\\]", Name));
                 sceneEntity.setDefualtStoryText(sceneEntity.getStory_txt_ar().replaceAll("\\[الاسم\\]", Name));
-
-
             }
             else {
                 sceneEntity.setDefualtStoryText(sceneEntity.getDefualtStoryText().replaceAll("\\[NAME\\]", Name));

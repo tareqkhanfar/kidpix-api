@@ -102,7 +102,8 @@ public class PhysicalBookService {
             dto.setCatId(entity.getBook().getCategory().getCatID());
             dto.setBookId(entity.getPhysicalBookId());
             dto.setCatName(entity.getBook().getCategory().getCatName());
-            dto.setThemePath(entity.getBook().getCategory().getThemeImagePath());
+            dto.setCoverPage(entity.getBook().getCoverPage());
+            dto.setKidName(entity.getBook().getKidName());
             dto.setRequestedDate(entity.getRequestDate());
             dto.setStatus(entity.getStatus());
             dto.setNumCopies(entity.getNumCopies());
