@@ -14,6 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.awt.print.Book;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.LinkedList;
@@ -119,7 +123,30 @@ public class BookService {
     }
 
     public String cancelBook(Long bookId) {
+        BookEntity bookEntity = this.bookRepository.findById(bookId).get();
+ String bookPath = bookEntity.getBookPath() ;
+ String coverPage = "/var/www/html"+bookEntity.getCoverPage();
+ String kidImage = "/var/www/html"+bookEntity.getKid_photo();
+        deleteFile(bookPath);
+        deleteFile(coverPage);
+        deleteFile(kidImage);
         this.bookRepository.deleteById(bookId);
         return "deleted Successfully";
+    }
+    private static void deleteFile(String filePath) {
+        System.out.println("Deleted Path : " + filePath);
+        try {
+            Path path = Paths.get(filePath);
+            boolean deleted = Files.deleteIfExists(path);
+
+            if (deleted) {
+                System.out.println("File deleted successfully: " + filePath);
+            } else {
+                System.out.println("File not found, so it's not deleted: " + filePath);
+            }
+        } catch (IOException e) {
+            System.err.println("An error occurred while attempting to delete the file: " + filePath);
+            e.printStackTrace();
+        }
     }
 }

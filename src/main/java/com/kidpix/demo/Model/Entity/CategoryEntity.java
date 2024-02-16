@@ -32,7 +32,7 @@ public class CategoryEntity {
     private List<SceneEntity > sceneEntityList ;
 
 
-    @OneToMany(mappedBy = "category" , cascade = CascadeType.ALL , fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "category" ,  fetch = FetchType.LAZY)
     private List<BookEntity > bookEntities ;
 
 
