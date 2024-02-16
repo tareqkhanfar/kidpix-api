@@ -109,7 +109,7 @@ public class EmailService {
 
     public void sendError(String FirstName , String LastName , String to, String KidName  ) {
         SimpleMailMessage message = new SimpleMailMessage();
-        String emailSubject = "Face Not Detection !";
+        String emailSubject = "<strong>KidPix : Face Not Detected !</strong>";
         String errorMessage = "Dear " + FirstName + " " + LastName + ",\n\n" +
                 "We regret to inform you that your face for KID :"+KidName + " was not detected in the uploaded image. " +
                 "Please try again by uploading another image that contains your face.\n\n" +
