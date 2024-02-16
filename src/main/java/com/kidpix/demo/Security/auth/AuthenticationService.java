@@ -64,9 +64,11 @@ public class AuthenticationService {
         var user = userRepository.findByEmail_(request.getEmail()).orElseThrow();
         var token = jwtService.generateToken(user);
         Byte status_account = this.userService.getUserInfoByEmail(request.getEmail()).getStatus_account();
+        String userName = user.getUserName();
         return new AuthenticationResponse().builder().
                 Token(token)
                 .status_account(status_account)
+                .userName(userName)
                 .build();
     }
 

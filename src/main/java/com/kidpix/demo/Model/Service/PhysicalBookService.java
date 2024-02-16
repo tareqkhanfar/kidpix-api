@@ -5,6 +5,7 @@ import com.kidpix.demo.Model.DTO.BookCatDTO;
 import com.kidpix.demo.Model.DTO.PhysicalBookForUser;
 import com.kidpix.demo.Model.DTO.PhysicalBookWithUserBook;
 import com.kidpix.demo.Model.Entity.BookEntity;
+import com.kidpix.demo.Model.Entity.CategoryEntity;
 import com.kidpix.demo.Model.Entity.PhysicalBookEntity;
 import com.kidpix.demo.Model.Repositories.PhysicalBookRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,37 +39,61 @@ public class PhysicalBookService {
       List<PhysicalBookWithUserBook> physicalBookWithUserBooks = new LinkedList<>() ;
       for (PhysicalBookEntity physicalBookEntity : physicalBookEntities){
           PhysicalBookWithUserBook userBook = new PhysicalBookWithUserBook();
-          userBook.setPhysicalBookId(physicalBookEntity.getPhysicalBookId());
-          userBook.setThemeName(physicalBookEntity.getBook().getCategory().getCatName());
-          userBook.setUserName(physicalBookEntity.getUser().getUserName());
-          userBook.setNumCopies(physicalBookEntity.getNumCopies());
-          userBook.setUserEmail(physicalBookEntity.getUser().getEmail());
-          userBook.setRequestDate(physicalBookEntity.getRequestDate());
-          userBook.setStatusBook(physicalBookEntity.getStatus());
-          physicalBookWithUserBooks.add(userBook) ;
+          BookEntity book = physicalBookEntity.getBook() ;
+          if (book == null) {
+              continue;
+          }
+          CategoryEntity category = book.getCategory() ;
+          if (category != null) {
+              userBook.setPhysicalBookId(physicalBookEntity.getPhysicalBookId());
+              userBook.setThemeName(category.getCatName());
+              userBook.setUserName(physicalBookEntity.getUser().getUserName());
+              userBook.setNumCopies(physicalBookEntity.getNumCopies());
+              userBook.setUserEmail(physicalBookEntity.getUser().getEmail());
+              userBook.setRequestDate(physicalBookEntity.getRequestDate());
+              userBook.setStatusBook(physicalBookEntity.getStatus());
+              physicalBookWithUserBooks.add(userBook) ;
+          }
 
       }
       return physicalBookWithUserBooks ;
      }
 
     public Long getTotalClientPurchesBook() {
-       return this.physicalBookRepo.countDistinctUser();
+        Long value = this.physicalBookRepo.countDistinctUser() ;
+       return value!=null ? value : 0;
     }
 
     public Double getTotalSales() {
-        return  this.physicalBookRepo.getTotalCopies()*5.0 ;
+        Long totalCopies = this.physicalBookRepo.getTotalCopies();
+        return totalCopies != null ? totalCopies * 5.0 : 0.0;
     }
 
+
     public Double getTotalSalesForCurrentMonth() {
-        return this.physicalBookRepo.findTotalSalesForCurrentMonth() * 5.0 ;
+        Double value =  this.physicalBookRepo.findTotalSalesForCurrentMonth() ;
+        if (value != null){
+            return  value.doubleValue() * 5 ;
+        }
+        else {
+            return  0.0 ;
+        }
     }
 
     public Long findBookByStatus(String status) {
-        return this.physicalBookRepo.findAllByStatus(status);
+       Long v =  this.physicalBookRepo.findAllByStatus(status);
+        return v!=null ?v :0;
     }
 
     public Double getTotalSalesForCurrentYear() {
-        return this.physicalBookRepo.findTotalSalesForCurrentYear() * 5.0;
+
+        Double value = this.physicalBookRepo.findTotalSalesForCurrentYear() ;
+        if (value != null){
+            return  value.doubleValue() * 5 ;
+        }
+        else {
+            return  0.0 ;
+        }
     }
 
     public PhysicalBookEntity changeStatus(Long bookId, String status) {
@@ -97,24 +122,32 @@ public class PhysicalBookService {
 
         for (PhysicalBookEntity entity : bookEntities) {
             PhysicalBookForUser dto = new PhysicalBookForUser()  ;
-            dto.setBookPath(entity.getBook().getBookPath().replaceAll("/var/www/html" , "http://kid-pix.com"));
-            dto.setCreatationDate(entity.getRequestDate());
-            dto.setCatId(entity.getBook().getCategory().getCatID());
-            dto.setBookId(entity.getPhysicalBookId());
-            dto.setCatName(entity.getBook().getCategory().getCatName());
-            dto.setCoverPage(entity.getBook().getCoverPage());
-            dto.setKidName(entity.getBook().getKidName());
-            dto.setRequestedDate(entity.getRequestDate());
-            dto.setStatus(entity.getStatus());
-            dto.setNumCopies(entity.getNumCopies());
-            bookCatDTOS.add(dto);
+            BookEntity book = entity.getBook() ;
+            if (book == null){
+                continue;
+            }
+            CategoryEntity category = entity.getBook().getCategory();
+
+            if (category != null){
+                dto.setBookPath(book.getBookPath().replaceAll("/var/www/html" , "http://kid-pix.com"));
+                dto.setCreatationDate(entity.getRequestDate());
+                dto.setCatId(category.getCatID());
+                dto.setBookId(entity.getPhysicalBookId());
+                dto.setCatName(category.getCatName());
+                dto.setCoverPage(book.getCoverPage());
+                dto.setKidName(book.getKidName());
+                dto.setRequestedDate(entity.getRequestDate());
+                dto.setStatus(entity.getStatus());
+                dto.setNumCopies(entity.getNumCopies());
+                bookCatDTOS.add(dto);
+            }
+
         }
         return bookCatDTOS;
     }
 
     public String cancelBook(Long bookId) {
         this.physicalBookRepo.delete(this.physicalBookRepo.findById(bookId).get());
-
         return "Cancelled Successfully " ;
     }
 }

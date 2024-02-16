@@ -33,28 +33,59 @@ public class ReviewService {
     }
 
     public Double getAvgRatingTotalByThemeName(String themeName) {
-  return  this.reviewRepo.findAverageRatingByThemeName(themeName) .get();
+        try {
+            Double v =   this.reviewRepo.findAverageRatingByThemeName(themeName) .get();
+            if (v != null) {
+                return v ;
+            }
+            return  0.0 ;
+        }
+        catch (Exception e ) {
+            return 0.0;
+        }
+
     }
 
     public Double getAverageOverAllKidpix() {
-
+try{
+    if (this.reviewRepo.findAverageOverAllWebsite().get()!= null) {
         return Math.round(this.reviewRepo.findAverageOverAllWebsite().get() * 100.0) / 100.0;
+    }
+    return 0.0 ;
+}
+catch (Exception e){
+    return 0.0;
+}
+
     }
 
     public HighestLowestRatingDTO getHighestRating() {
         List<Object[]> averages = reviewRepo.findAverageRatingsByTheme();
-        return averages.stream()
-                .max(Comparator.comparing(avg -> (Double) avg[1]))
-                .map(result -> new HighestLowestRatingDTO((String) result[0], (Double) result[1]))
-                .orElse(null); // handle the case where no result is found
+try{
+    return averages.stream()
+            .max(Comparator.comparing(avg -> (Double) avg[1]))
+            .map(result -> new HighestLowestRatingDTO((String) result[0], (Double) result[1]))
+            .orElse(null); // handle the case where no result is found
+}
+catch (Exception e ) {
+    return new HighestLowestRatingDTO("null" , -1.0);
+}
+
     }
 
     public HighestLowestRatingDTO getLowestRating() {
+
         List<Object[]> averages = reviewRepo.findAverageRatingsByTheme();
-        return averages.stream()
-                .min(Comparator.comparing(avg -> (Double) avg[1]))
-                .map(result -> new HighestLowestRatingDTO((String) result[0], (Double) result[1]))
-                .orElse(null); // handle the case where no result is found
+        try {
+            return averages.stream()
+                    .min(Comparator.comparing(avg -> (Double) avg[1]))
+                    .map(result -> new HighestLowestRatingDTO((String) result[0], (Double) result[1]))
+                    .orElse(null); // handle the case where no result is found
+        }
+        catch (Exception e ) {
+            return new HighestLowestRatingDTO("null" , -1.0);
+        }
+
     }
 
 

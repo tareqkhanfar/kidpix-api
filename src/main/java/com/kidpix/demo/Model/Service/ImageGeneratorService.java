@@ -75,9 +75,9 @@ public class ImageGeneratorService {
 
         UserEntity userEntity = this.bookService.findBookById(imageGeneratorDTO.getBookId()).getUser() ;
 
-        String outputDir = "/var/www/html/assets/bundles/superman/" ;
+        //String outputDir = "/var/www/html/assets/bundles/school/" ;
 
-      // String outputDir = runFaceSwapScript(imageInputPath, themeName, kidName);
+      String outputDir = runFaceSwapScript(imageInputPath, themeName, kidName);
 
         if(outputDir.contains("error")){
             this.emailService.sendError(userEntity.getFirstName() , userEntity.getLastName() , userEntity.getEmail()  ,kidName) ;

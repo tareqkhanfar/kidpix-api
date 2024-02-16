@@ -14,5 +14,6 @@ public class AuthenticationResponse {
 
     private String Token ;
     private Byte status_account ;
+    private String userName ;
 
 }

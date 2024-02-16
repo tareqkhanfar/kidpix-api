@@ -101,7 +101,6 @@ catch (Exception exception ) {
 
     }
     @CrossOrigin(origins = "*") // Specify the allowed origin
-
     @PostMapping("/validateCode")
     public ResponseEntity<ApiResponse> validateSecurityCode(@RequestBody Map<String, String> requestData) {
         boolean isValid = emailService.validateSecurityCode(requestData.get("email"), Integer.parseInt(requestData.get("securityCode").trim()));

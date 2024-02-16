@@ -5,8 +5,8 @@ import lombok.Data;
 
 @Data
 public class HighestLowestRatingDTO {
-    private String themeName ;
-    private Double rating;
+    private String themeName = "N\\A" ;
+    private Double rating=0.0;
 
 
     public HighestLowestRatingDTO(String str , Double rating){

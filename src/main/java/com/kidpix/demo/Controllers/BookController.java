@@ -75,7 +75,13 @@ return outputfile.getAbsolutePath();
     }
     @GetMapping("/cancel_book/{book_id}")
     public ResponseEntity<String> cancelPage(@PathVariable("book_id") Long bookId){
-        return ResponseEntity.ok(this.bookService.cancelBook(bookId));
+        try {
+            return ResponseEntity.ok(this.bookService.cancelBook(bookId));
+
+        }
+        catch (Exception e ){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @GetMapping("/getAllBooksForUser/{email}")

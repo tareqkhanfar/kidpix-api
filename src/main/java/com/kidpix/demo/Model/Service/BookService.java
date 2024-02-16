@@ -5,6 +5,8 @@ import com.kidpix.demo.Model.DTO.BookDTO;
 import com.kidpix.demo.Model.DTO.FinalizeBookDTO;
 import com.kidpix.demo.Model.DTO.ResponseDigitalBooksDTO;
 import com.kidpix.demo.Model.Entity.BookEntity;
+import com.kidpix.demo.Model.Entity.CategoryEntity;
+import com.kidpix.demo.Model.Entity.PhysicalBookEntity;
 import com.kidpix.demo.Model.Entity.SceneEntity;
 import com.kidpix.demo.Model.Repositories.BookRepository;
 import com.kidpix.demo.Model.Repositories.SceneRepo;
@@ -34,6 +36,9 @@ public class BookService {
 
     @Autowired
     private CategoryService categoryService ;
+
+    @Autowired
+    private PhysicalBookService physicalBookService ;
 
 
     public BookEntity createBook(BookEntity bookEntity) {
@@ -84,8 +89,12 @@ public class BookService {
            digitalBooksDTO.setEmail(bookEntity.getUser().getEmail());
 
            System.out.println(bookEntity.getBook_id());
-           digitalBooksDTO.setThemeName(bookEntity.getCategory().getCatName());
-            responseDigitalBooksDTOS.add(digitalBooksDTO);
+            CategoryEntity category = bookEntity.getCategory() ;
+            if (category != null) {
+                digitalBooksDTO.setThemeName(bookEntity.getCategory().getCatName());
+                responseDigitalBooksDTOS.add(digitalBooksDTO);
+            }
+
         }
         return responseDigitalBooksDTOS ;
     }
@@ -97,14 +106,19 @@ public class BookService {
 
        for (BookEntity entity : bookEntities) {
            BookCatDTO dto = new BookCatDTO()  ;
+
            dto.setBookPath(entity.getBookPath().replaceAll("/var/www/html" , "http://kid-pix.com"));
            dto.setCreatationDate(entity.getCreatedBook());
-           dto.setCatId(entity.getCategory().getCatID());
            dto.setBookId(entity.getBook_id());
-           dto.setCatName(entity.getCategory().getCatName());
            dto.setThemePath(entity.getCoverPage());
            dto.setKidName(entity.getKidName());
-           bookCatDTOS.add(dto);
+           CategoryEntity category = entity.getCategory() ;
+           if (category != null) {
+               dto.setCatId(entity.getCategory().getCatID());
+               dto.setCatName(entity.getCategory().getCatName());
+               bookCatDTOS.add(dto);
+           }
+
         }
         return bookCatDTOS;
     }
@@ -124,6 +138,14 @@ public class BookService {
 
     public String cancelBook(Long bookId) {
         BookEntity bookEntity = this.bookRepository.findById(bookId).get();
+     for  (PhysicalBookEntity book : bookEntity.getPhysicalBookEntities() ){
+             if (book.getStatus().equalsIgnoreCase("Pending") ||book.getStatus().equalsIgnoreCase("Shipped") ){
+                 throw new IllegalArgumentException("Please Cancel the Physical Books for this digital book ") ;
+             }
+             else {
+                 this.physicalBookService.cancelBook(book.getPhysicalBookId()) ;
+             }
+     }
  String bookPath = bookEntity.getBookPath() ;
  String coverPage = "/var/www/html"+bookEntity.getCoverPage();
  String kidImage = "/var/www/html"+bookEntity.getKid_photo();
