@@ -75,7 +75,7 @@ public class ImageGeneratorService {
 
         UserEntity userEntity = this.bookService.findBookById(imageGeneratorDTO.getBookId()).getUser() ;
 
-        //String outputDir = "/var/www/html/assets/bundles/school/" ;
+        //String outputDir = "/var/www/html/assets/bundles/zoo/" ;
 
       String outputDir = runFaceSwapScript(imageInputPath, themeName, kidName);
 

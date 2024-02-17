@@ -10,6 +10,7 @@ import com.kidpix.demo.Model.Entity.PhysicalBookEntity;
 import com.kidpix.demo.Model.Entity.SceneEntity;
 import com.kidpix.demo.Model.Repositories.BookRepository;
 import com.kidpix.demo.Model.Repositories.SceneRepo;
+import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +40,6 @@ public class BookService {
 
     @Autowired
     private PhysicalBookService physicalBookService ;
-
 
     public BookEntity createBook(BookEntity bookEntity) {
         bookEntity.setStatus("Pending");
@@ -87,7 +87,9 @@ public class BookService {
            digitalBooksDTO.setCreatedBook(bookEntity.getCreatedBook());
            digitalBooksDTO.setUsername(bookEntity.getUser().getUserName());
            digitalBooksDTO.setEmail(bookEntity.getUser().getEmail());
-
+           if (bookEntity.getBookPath().equalsIgnoreCase("na")){
+               continue;
+           }
            System.out.println(bookEntity.getBook_id());
             CategoryEntity category = bookEntity.getCategory() ;
             if (category != null) {
@@ -108,6 +110,10 @@ public class BookService {
            BookCatDTO dto = new BookCatDTO()  ;
 
            dto.setBookPath(entity.getBookPath().replaceAll("/var/www/html" , "http://kid-pix.com"));
+           if (dto.getBookPath().equalsIgnoreCase("na")){
+               cancelBook(entity.getBook_id());
+               continue;
+           }
            dto.setCreatationDate(entity.getCreatedBook());
            dto.setBookId(entity.getBook_id());
            dto.setThemePath(entity.getCoverPage());
