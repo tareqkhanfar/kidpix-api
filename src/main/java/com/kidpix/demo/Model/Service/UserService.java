@@ -3,9 +3,8 @@ package com.kidpix.demo.Model.Service;
 import com.kidpix.demo.Model.DTO.UserDTO;
 import com.kidpix.demo.Model.Entity.UserEntity;
 import com.kidpix.demo.Model.Repositories.UserRepo;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,6 +14,7 @@ public class UserService {
 
    @Autowired
     private UserRepo userRepo ;
+
 
     public UserEntity signUP(UserDTO userDTO) {
 
@@ -92,13 +92,5 @@ public class UserService {
         return this.userRepo.findById(userId).get();
     }
 
-    public boolean changePassword(String email, String password) {
-        UserEntity userEntity = this.userRepo.findByEmail(email);
-        if (userEntity != null) {
-            userEntity.setPassword(password);
-             this.userRepo.save(userEntity);
-             return true ;
-        }
-        return false ;
-    }
+
 }

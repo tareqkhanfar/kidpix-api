@@ -3,6 +3,7 @@ package com.kidpix.demo.Security.auth;
 
 import com.kidpix.demo.Model.Entity.UserEntity;
 import com.kidpix.demo.Model.Repositories.UserRepo;
+import com.kidpix.demo.Model.Service.EmailService;
 import com.kidpix.demo.Model.Service.UserService;
 import com.kidpix.demo.Security.config.JwtService;
 import lombok.RequiredArgsConstructor;
@@ -26,8 +27,12 @@ public class AuthenticationService {
 
     private final AuthenticationManager authenticationManager ;
 
+
     @Autowired
     private UserService userService ;
+
+    @Autowired
+    private EmailService emailService ;
     public AuthenticationResponse register(RegisterRequest registerRequest) {
         UserEntity userEntity = userService.getUserInfoByEmail(registerRequest.getEmail().trim());
         if (userEntity != null) {
@@ -50,6 +55,19 @@ public class AuthenticationService {
                 Token(token)
                 .status_account(user.getStatus_account())
                 .build();
+    }
+
+    public boolean changePassword(String email, String password , Integer securityCode) {
+        UserEntity userEntity = this.userRepository.findByEmail(email);
+       if (this.emailService.validateSecurityCode(email , securityCode)==false) {
+           throw new IllegalArgumentException("Security Code Not Correct , try again ! " ) ;
+       }
+        if (userEntity != null) {
+            userEntity.setPassword(this.passwordEncoder.encode(password));
+            this.userRepository.save(userEntity);
+            return true ;
+        }
+        return false ;
     }
 
     public AuthenticationResponse authenticateRequest(AuthenticationRequest request) {
